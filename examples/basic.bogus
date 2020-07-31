@@ -1,0 +1,21 @@
+
+fun int sum(a int, b int) = a + b
+
+fun void output(result int, message string) {
+    print(message + " " + result)
+}
+
+fun int main(args []string) {
+    let a = 1
+    let b = 2
+    let c = "bogus-lang calculates: "
+
+    output(sum(a, b), c)
+
+    if a < b {
+        print("a is smaller than b")        
+    } else {
+        print("a is larger or same than b")
+    }
+    return 0
+}
