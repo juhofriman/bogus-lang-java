@@ -1,6 +1,9 @@
 package lang.bogus;
 
 import lang.bogus.lexer.BogusLexer;
+import lang.bogus.parser.BogusParser;
+import lang.bogus.statement.BogusStatement;
+import lang.bogus.value.Value;
 
 import java.util.Scanner;
 import java.util.function.Function;
@@ -17,24 +20,41 @@ public class BogusRepl {
         try (Scanner scanner = new Scanner(System.in)) {
 
             Supplier<String> input = () -> {
-                System.out.print("> ");
+                System.out.print("bogus> ");
                 return scanner.nextLine();
             };
 
             String quit = ":quit";
             String lex = ":lex ";
+            String parse = ":parse ";
             Function<String, String> expressionHandler = expression -> {
 
-                if (quit.equals(expression)) {
-                    return quit;
+                try {
+                    if (quit.equals(expression)) {
+                        return quit;
+                    }
+
+                    if (expression.startsWith(lex)) {
+                        BogusLexer bogusLexer = new BogusLexer(expression.substring(lex.length()));
+                        System.out.println(bogusLexer.getTokens());
+                        return expression;
+                    }
+
+                    if (expression.startsWith(parse)) {
+                        BogusParser bogusParser = new BogusParser(new BogusLexer(expression.substring(parse.length())));
+                        System.out.println(bogusParser.parse());
+                        return expression;
+                    }
+                    BogusParser bogusParser = new BogusParser(new BogusLexer(expression));
+                    Value r = null;
+                    for (BogusStatement bogusStatement : bogusParser.parse()) {
+                        r = bogusStatement.evaluate();
+                    }
+                    System.out.println(r.asString());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-                if (expression.startsWith(lex)) {
-                    BogusLexer bogusLexer = new BogusLexer(expression.substring(lex.length()));
-                    System.out.println(bogusLexer.getTokens());
-                    return expression;
-                }
-                System.out.println("Evaluation of bogus not yet implemented");
                 return expression;
 
             };

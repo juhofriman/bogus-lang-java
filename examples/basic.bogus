@@ -6,7 +6,7 @@ fun void output(result int, message string) {
 }
 
 fun int main(args []string) {
-    let a = 1
+    let a = 1 + 1
     let b = 2
     let c = "bogus-lang calculates: "
 

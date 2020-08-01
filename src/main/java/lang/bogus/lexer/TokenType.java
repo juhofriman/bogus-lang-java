@@ -4,8 +4,35 @@ package lang.bogus.lexer;
  * Created by juhof on 29.7.2020.
  */
 public enum TokenType {
-    LET,
-    RETURN,
-    FUN,
-    LEFT_PARENS, RIGHT_PARENS, LEFT_BRACE, RIGHT_BRACE, INT, STRING, EQUALS, PLUS, MINUS, MULTIPLICATION, DIVISION, IDENTIFIER
+    LET(null, 1),
+    RETURN(null, 1),
+    FUN(null, 1),
+    LEFT_PARENS(0, 1),
+    RIGHT_PARENS(null, 1),
+    LEFT_BRACE(1, 1),
+    RIGHT_BRACE(1, 1),
+    INT(null, 1),
+    STRING(1, 1),
+    EQUALS(1, 1),
+    PLUS(null, 1),
+    MINUS(100, 2),
+    MULTIPLICATION(null, 5),
+    DIVISION(null, 9),
+    IDENTIFIER(null, 1);
+
+    private final Integer prefixBindingPower;
+    private final Integer infixBindingPower;
+
+    TokenType(Integer prefixBindingPower, Integer infixBindingPower) {
+        this.prefixBindingPower = prefixBindingPower;
+        this.infixBindingPower = infixBindingPower;
+    }
+
+    public Integer getInfixBindingPower() {
+        return infixBindingPower;
+    }
+
+    public Integer getPrefixBindingPower() {
+        return prefixBindingPower;
+    }
 }
