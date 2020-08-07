@@ -1,6 +1,7 @@
 package lang.bogus.statement;
 
 import lang.bogus.lexer.IntToken;
+import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.IntegerValue;
 import lang.bogus.value.Value;
 
@@ -20,7 +21,7 @@ public class IntegerExpression implements Expression {
     }
 
     @Override
-    public Value evaluate() {
+    public Value evaluate(BogusScope scope) {
         return new IntegerValue(Integer.parseInt(token.getLiteral().literal));
     }
 }

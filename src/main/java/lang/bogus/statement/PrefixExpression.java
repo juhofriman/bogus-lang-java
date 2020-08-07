@@ -1,6 +1,7 @@
 package lang.bogus.statement;
 
 import lang.bogus.lexer.BogusToken;
+import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.IntegerValue;
 import lang.bogus.value.Value;
 
@@ -23,8 +24,8 @@ public class PrefixExpression implements Expression {
     }
 
     @Override
-    public Value evaluate() {
-        IntegerValue l = (IntegerValue) expression.evaluate();
+    public Value evaluate(BogusScope scope) {
+        IntegerValue l = (IntegerValue) expression.evaluate(scope);
         if(this.operator.getLiteral().literal.equals("-")) {
             return new IntegerValue(-l.getValue());
         }

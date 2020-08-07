@@ -1,6 +1,7 @@
 package lang.bogus.statement;
 
 import lang.bogus.lexer.BogusToken;
+import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.IntegerValue;
 import lang.bogus.value.Value;
 
@@ -25,9 +26,9 @@ public class OperationExpression implements Expression {
     }
 
     @Override
-    public Value evaluate() {
-        IntegerValue l = (IntegerValue) left.evaluate();
-        IntegerValue r = (IntegerValue) right.evaluate();
+    public Value evaluate(BogusScope scope) {
+        IntegerValue l = (IntegerValue) left.evaluate(scope);
+        IntegerValue r = (IntegerValue) right.evaluate(scope);
         if(this.token.getLiteral().literal.equals("+")) {
             return new IntegerValue(l.getValue() + r.getValue());
         } else if (this.token.getLiteral().literal.equals("-")) {

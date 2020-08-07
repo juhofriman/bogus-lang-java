@@ -2,6 +2,7 @@ package lang.bogus;
 
 import lang.bogus.lexer.BogusLexer;
 import lang.bogus.parser.BogusParser;
+import lang.bogus.runtime.BogusScope;
 import lang.bogus.statement.BogusStatement;
 import lang.bogus.value.Value;
 
@@ -27,6 +28,7 @@ public class BogusRepl {
             String quit = ":quit";
             String lex = ":lex ";
             String parse = ":parse ";
+            BogusScope root = new BogusScope();
             Function<String, String> expressionHandler = expression -> {
 
                 try {
@@ -48,7 +50,7 @@ public class BogusRepl {
                     BogusParser bogusParser = new BogusParser(new BogusLexer(expression));
                     Value r = null;
                     for (BogusStatement bogusStatement : bogusParser.parse()) {
-                        r = bogusStatement.evaluate();
+                        r = bogusStatement.evaluate(root);
                     }
                     System.out.println(r.asString());
                 } catch (Exception e) {

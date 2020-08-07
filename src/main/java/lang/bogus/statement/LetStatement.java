@@ -1,16 +1,16 @@
 package lang.bogus.statement;
 
-import lang.bogus.lexer.BogusToken;
+import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.Value;
 
 /**
  * Created by juhof on 31.7.2020.
  */
 public class LetStatement implements BogusStatement {
-    private final BogusToken identifier;
+    private final Identifier identifier;
     private final Expression expression;
 
-    public LetStatement(BogusToken identifier, Expression expression) {
+    public LetStatement(Identifier identifier, Expression expression) {
         this.identifier = identifier;
         this.expression = expression;
     }
@@ -21,7 +21,8 @@ public class LetStatement implements BogusStatement {
     }
 
     @Override
-    public Value evaluate() {
-        return this.expression.evaluate();
+    public Value evaluate(BogusScope scope) {
+        scope.store(this.identifier, this.expression.evaluate(scope));
+        return scope.resolve(this.identifier);
     }
 }

@@ -2,6 +2,7 @@ package lang.bogus.lexer;
 
 import lang.bogus.statement.BogusStatement;
 import lang.bogus.statement.Expression;
+import lang.bogus.statement.Identifier;
 import lang.bogus.statement.LetStatement;
 
 /**
@@ -23,7 +24,7 @@ public class LetToken extends BogusToken {
         BogusToken identifier = lexer.next(TokenType.IDENTIFIER);
         lexer.next(TokenType.EQUALS);
         Expression expression = lexer.next().parseExpression(lexer);
-        return new LetStatement(identifier, expression);
+        return new LetStatement(new Identifier(identifier), expression);
     }
 
 }

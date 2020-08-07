@@ -23,14 +23,11 @@ public class LeftParensToken extends BogusToken {
 
     @Override
     public Expression parsePrefix(BogusLexer lexer) {
-        //return null;
-        System.out.println("left parse prefix");
         return lexer.next().parseExpression(lexer, type().getPrefixBindingPower());
     }
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
-        System.out.println("left parse infix");
         return null;
     }
 }
