@@ -53,4 +53,8 @@ public abstract class BogusToken {
         System.out.println("Dunno how to parse infix: " + this.type());
         return null;
     }
+
+    public boolean is(TokenType identifier) {
+        return this.type() == identifier;
+    };
 }

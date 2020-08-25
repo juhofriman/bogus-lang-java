@@ -183,7 +183,7 @@ class RawTokenizer {
 
 public class BogusLexer {
 
-    private List<BogusToken> tokens = new LinkedList();
+    private List<BogusToken> tokens = new ArrayList<>();
     private int pointer = 0;
 
     public BogusLexer(String source) {
@@ -212,21 +212,24 @@ public class BogusLexer {
     public BogusToken next(TokenType type) {
         BogusToken next = this.next();
         if(!next.type().equals(type)) {
-            throw new RuntimeException("Encountered " + next.type() + " while expecting " + type + " at " + next.positionString());
+            throw new ExpectingTokenException(type, next);
         }
         return next;
     }
 
     public BogusToken peek() {
-        BogusToken bogusToken = this.tokens.get(this.pointer + 1);
-        return bogusToken;
+        return this.lookahead(1);
     }
 
     public BogusToken lookahead(int i) {
         if(!this.hasNext()) {
             return null;
         }
-        BogusToken bogusToken = this.tokens.get(this.pointer + i);
+        int index = this.pointer + i;
+        if(index >= this.tokens.size()) {
+            return null;
+        }
+        BogusToken bogusToken = this.tokens.get(index);
         return bogusToken;
     }
 
