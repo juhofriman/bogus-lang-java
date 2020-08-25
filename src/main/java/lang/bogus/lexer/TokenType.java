@@ -7,7 +7,7 @@ public enum TokenType {
     LET(null, 1),
     RETURN(null, 1),
     FUN(null, 1),
-    LEFT_PARENS(0, 1),
+    LEFT_PARENS(0, 50),
     RIGHT_PARENS(null, 1),
     LEFT_BRACE(1, 1),
     RIGHT_BRACE(1, 1),
@@ -18,7 +18,10 @@ public enum TokenType {
     MINUS(100, 2),
     MULTIPLICATION(null, 5),
     DIVISION(null, 9),
-    IDENTIFIER(null, 1);
+    IDENTIFIER(null, 1),
+    COMMA(null, 0),
+    SEMICOLON(null, 0);
+
 
     private final Integer prefixBindingPower;
     private final Integer infixBindingPower;

@@ -66,6 +66,8 @@ class RawTokenizer {
                 c == 45 || // -
                 c == 42 || // *
                 c == 47 || // /
+                c == 44 || // ,
+                c == 59 || // ;
                 c == 61; // =
     }
 
@@ -158,6 +160,10 @@ class RawTokenizer {
                 return new MultiplicationToken(literal);
             case "/":
                 return new DivisionToken(literal);
+            case ",":
+                return new CommaToken(literal);
+            case ";":
+                return new SemicolonToken(literal);
             default:
                 return new IdentifierToken(literal);
         }
@@ -195,6 +201,9 @@ public class BogusLexer {
     }
 
     public BogusToken next() {
+        if(!this.hasNext()) {
+            return null;
+        }
         BogusToken bogusToken = this.tokens.get(this.pointer);
         this.pointer++;
         return bogusToken;
@@ -220,6 +229,10 @@ public class BogusLexer {
         BogusToken bogusToken = this.tokens.get(this.pointer + i);
         return bogusToken;
     }
+
+    // 0 1 2
+    // len 3
+
 
     public boolean hasNext() {
         return this.pointer < this.tokens.size();

@@ -22,6 +22,7 @@ public class IdentifierToken extends BogusToken {
         return super.parseExpression(lexer);
     }
 
+
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
         return null;

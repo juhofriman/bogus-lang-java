@@ -36,6 +36,10 @@ public class BogusRepl {
                         return quit;
                     }
 
+                    if(expression.trim().isEmpty()) {
+                        return expression;
+                    }
+
                     if (expression.startsWith(lex)) {
                         BogusLexer bogusLexer = new BogusLexer(expression.substring(lex.length()));
                         System.out.println(bogusLexer.getTokens());
