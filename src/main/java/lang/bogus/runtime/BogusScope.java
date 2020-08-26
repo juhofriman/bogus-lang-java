@@ -12,13 +12,34 @@ import java.util.Map;
 public class BogusScope {
 
     private Map<String, Value> registry = new HashMap<>();
+    private BogusScope parentScope;
+
+    public BogusScope() {
+
+    }
+
+    public BogusScope(BogusScope parentScope) {
+        this.parentScope = parentScope;
+    }
 
     public void store(Identifier identifier, Value value) {
+        System.out.println("Storing " + identifier);
         this.registry.put(identifier.getName(), value);
     }
 
     public Value resolve(Identifier identifier) {
-        return this.registry.get(identifier.getName());
+
+        Value value = this.registry.get(identifier.getName());
+        if(value == null) {
+            System.out.println("resolving " + identifier + "from parent");
+            if(this.parentScope != null) {
+                return this.parentScope.resolve(identifier);
+            }
+            return null;
+        } else {
+            System.out.println("resolved " + identifier);
+            return value;
+        }
     }
 
 }

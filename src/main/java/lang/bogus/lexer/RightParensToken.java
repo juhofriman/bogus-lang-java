@@ -28,7 +28,6 @@ public class RightParensToken extends BogusToken {
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
-        lexer.next();
         return left;
     }
 

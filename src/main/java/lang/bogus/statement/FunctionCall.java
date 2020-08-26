@@ -35,8 +35,9 @@ public class FunctionCall implements Expression {
                 resolvedArgs.add(argument.evaluate(scope));
             }
 
-            return fn.call(new BogusScope(), resolvedArgs);
+            return fn.call(new BogusScope(scope), resolvedArgs);
         }
+        System.out.println(resolve.getClass());
         return new IntegerValue(123);
     }
 }

@@ -47,8 +47,7 @@ public class FunToken extends BogusToken {
             return new FunctionStatement(new Identifier(identifier), arguments, expression);
         }
         if(next.type() == TokenType.LEFT_BRACE) {
-            BogusStatement statement = lexer.next().parse(lexer);
-            System.out.println(statement);
+            BogusStatement statement = next.parse(lexer);
             return new FunctionStatement(new Identifier(identifier), arguments, statement);
         }
         throw new RuntimeException("Expecting = or {, encountered " + next);

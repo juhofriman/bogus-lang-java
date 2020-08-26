@@ -34,6 +34,11 @@ public class FunctionStatement implements BogusStatement {
         if(this.statement != null) {
             scope.store(this.identifier, new FunctionValue(this.identifier, this.arguments, this.statement));
         }
-        return new IntegerValue(1);
+        return new Value() {
+            @Override
+            public String asString() {
+                return "type[FN]";
+            }
+        };
     }
 }

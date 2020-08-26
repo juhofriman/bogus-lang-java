@@ -1,0 +1,9 @@
+fun sum(a, b) = a + b;
+
+fun scoping(n) {
+   let a = 5;
+   let b = sum(1, n);
+   return a - b;
+}
+
+scoping(3);

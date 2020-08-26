@@ -36,15 +36,16 @@ public class Bogus {
     }
 
     public static void main( String[] args ) {
-        if(args.length == 0) {
+        if(args.length < 1) {
             System.out.println("Pass filename");
+            System.exit(1);
         }
 
         BogusScope bogusScope = new BogusScope();
         List<BogusStatement> statements = new BogusParser(new BogusLexer(readSource(args[0]))).parse();
         Value value = null;
         for (BogusStatement statement : statements) {
-            statement.evaluate(bogusScope);
+            value = statement.evaluate(bogusScope);
         }
         System.out.println(value.asString());
 

@@ -1,9 +1,6 @@
 package lang.bogus.lexer;
 
-import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
-import lang.bogus.statement.FunctionCall;
-import lang.bogus.statement.Identifier;
+import lang.bogus.statement.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,13 +30,18 @@ public class LeftParensToken extends BogusToken {
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
-        List<Expression> arguments = new LinkedList<>();
-        BogusToken next = lexer.next();
-        while(next != null && lexer.hasNext()) {
+        System.out.println("left " + left);
+        if(left instanceof Identifier) {
+            List<Expression> arguments = new LinkedList<>();
+            BogusToken next = lexer.next();
+            while (next != null && lexer.hasNext()) {
 
-            arguments.add(next.parseExpression(lexer));
-            next = lexer.next();
+                arguments.add(next.parseExpression(lexer));
+                next = lexer.next();
+            }
+            return new FunctionCall((Identifier) left, arguments);
         }
-        return new FunctionCall((Identifier) left, arguments);
+        System.out.println(lexer.next());
+        return left;
     }
 }
