@@ -1,5 +1,7 @@
 package lang.bogus.lexer;
 
+import lang.bogus.lexer.token.BogusToken;
+
 public class SourceCodeAwareException extends RuntimeException {
 
     protected BogusToken token;

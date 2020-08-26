@@ -1,21 +1,23 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
-import lang.bogus.statement.OperationExpression;
-import lang.bogus.statement.PrefixExpression;
+import lang.bogus.expression.Expression;
+import lang.bogus.expression.OperationExpression;
+import lang.bogus.expression.PrefixExpression;
 
 /**
  * Created by juhof on 31.7.2020.
  */
-public class DivisionToken extends BogusToken {
-    public DivisionToken(RawLiteral literal) {
+public class MinusToken extends BogusToken {
+    public MinusToken(RawLiteral literal) {
         super(literal);
     }
 
     @Override
-    protected TokenType type() {
-        return TokenType.DIVISION;
+    public TokenType type() {
+        return TokenType.MINUS;
     }
 
     @Override
@@ -25,7 +27,8 @@ public class DivisionToken extends BogusToken {
 
     @Override
     public Expression parsePrefix(BogusLexer lexer) {
-        return null;
+        Expression right = lexer.next().parseExpression(lexer, type().getInfixBindingPower());
+        return new PrefixExpression(this, right);
     }
 
     @Override

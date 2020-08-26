@@ -1,5 +1,6 @@
 package lang.bogus.statement;
 
+import lang.bogus.expression.Expression;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.Value;
 

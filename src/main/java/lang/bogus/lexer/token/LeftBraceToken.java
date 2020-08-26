@@ -1,5 +1,8 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lang.bogus.inspector.Deck;
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
 import lang.bogus.statement.GroupedStatement;
 
@@ -15,7 +18,7 @@ public class LeftBraceToken extends BogusToken {
     }
 
     @Override
-    protected TokenType type() {
+    public TokenType type() {
         return TokenType.LEFT_BRACE;
     }
 
@@ -32,8 +35,8 @@ public class LeftBraceToken extends BogusToken {
             next = lexer.next();
 
         }
-        System.out.println("Holla " + expressions.size());
-        System.out.println(expressions);
+
+        Deck.message(expressions);
         return new GroupedStatement(expressions);
     }
 

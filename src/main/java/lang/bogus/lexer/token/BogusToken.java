@@ -1,7 +1,10 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lang.bogus.inspector.Deck;
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
+import lang.bogus.expression.Expression;
 
 public abstract class BogusToken {
 
@@ -11,7 +14,7 @@ public abstract class BogusToken {
         this.literal = literal;
     }
 
-    protected abstract TokenType type();
+    public abstract TokenType type();
 
     public RawLiteral getLiteral() {
         return literal;
@@ -45,12 +48,12 @@ public abstract class BogusToken {
     }
 
     public Expression parsePrefix(BogusLexer lexer) {
-        System.out.println("Dunno how to parse prefix: " + this.type());
+        Deck.message("Dunno how to parse prefix: " + this.type());
         return null;
     }
 
     public Expression parseInfix(BogusLexer lexer, Expression left) {
-        System.out.println("Dunno how to parse infix: " + this.type());
+        Deck.message("Dunno how to parse infix: " + this.type());
         return null;
     }
 

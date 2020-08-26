@@ -1,5 +1,10 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.expression.Expression;
+import lang.bogus.expression.FunctionCallExpression;
+import lang.bogus.expression.IdentifierExpression;
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.*;
 
 import java.util.LinkedList;
@@ -14,7 +19,7 @@ public class LeftParensToken extends BogusToken {
     }
 
     @Override
-    protected TokenType type() {
+    public TokenType type() {
         return TokenType.LEFT_PARENS;
     }
 
@@ -30,8 +35,7 @@ public class LeftParensToken extends BogusToken {
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
-        System.out.println("left " + left);
-        if(left instanceof Identifier) {
+        if(left instanceof IdentifierExpression) {
             List<Expression> arguments = new LinkedList<>();
             BogusToken next = lexer.next();
             while (next != null && lexer.hasNext()) {
@@ -39,9 +43,8 @@ public class LeftParensToken extends BogusToken {
                 arguments.add(next.parseExpression(lexer));
                 next = lexer.next();
             }
-            return new FunctionCall((Identifier) left, arguments);
+            return new FunctionCallExpression((IdentifierExpression) left, arguments);
         }
-        System.out.println(lexer.next());
         return left;
     }
 }

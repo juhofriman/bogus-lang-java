@@ -1,6 +1,6 @@
 package lang.bogus.value;
 
-import lang.bogus.lexer.StringToken;
+import lang.bogus.lexer.token.StringToken;
 
 public class StringValue implements Value {
     private StringToken string;

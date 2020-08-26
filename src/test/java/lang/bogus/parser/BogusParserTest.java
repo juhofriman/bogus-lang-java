@@ -1,7 +1,11 @@
 package lang.bogus.parser;
 
+import lang.bogus.expression.IdentifierExpression;
+import lang.bogus.expression.IntegerExpression;
+import lang.bogus.expression.OperationExpression;
+import lang.bogus.expression.StringExpression;
 import lang.bogus.lexer.BogusLexer;
-import lang.bogus.lexer.IdentifierToken;
+import lang.bogus.lexer.token.IdentifierToken;
 import lang.bogus.lexer.RawLiteral;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.statement.*;
@@ -108,8 +112,8 @@ public class BogusParserTest {
         return vals;
     }
 
-    private Identifier dummyIdentifier(String name) {
-        return new Identifier(new IdentifierToken(new RawLiteral(1, 1, name)));
+    private IdentifierExpression dummyIdentifier(String name) {
+        return new IdentifierExpression(new IdentifierToken(new RawLiteral(1, 1, name)));
     }
 
 

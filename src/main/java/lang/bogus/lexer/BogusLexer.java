@@ -1,5 +1,7 @@
 package lang.bogus.lexer;
 
+import lang.bogus.lexer.token.*;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;

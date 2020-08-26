@@ -1,7 +1,9 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
+import lang.bogus.expression.Expression;
 import lang.bogus.statement.ReturnStatement;
 
 /**
@@ -13,7 +15,7 @@ public class ReturnToken extends BogusToken {
     }
 
     @Override
-    protected TokenType type() {
+    public TokenType type() {
         return TokenType.RETURN;
     }
 

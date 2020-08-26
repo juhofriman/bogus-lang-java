@@ -1,17 +1,17 @@
-package lang.bogus.statement;
+package lang.bogus.expression;
 
-import lang.bogus.lexer.BogusToken;
+import lang.bogus.lexer.token.BogusToken;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.Value;
 
 /**
  * Created by juhof on 1.8.2020.
  */
-public class Identifier implements Expression {
+public class IdentifierExpression implements Expression {
 
     private final String name;
 
-    public Identifier(BogusToken token) {
+    public IdentifierExpression(BogusToken token) {
         name = token.getLiteral().literal;
     }
 
@@ -19,7 +19,7 @@ public class Identifier implements Expression {
     public Value evaluate(BogusScope scope) {
         Value resolvedValue = scope.resolve(this);
         if(resolvedValue == null) {
-            throw new RuntimeException("No such var in scope: " + this.name);
+            throw new NoSuchVarException(this.name);
         }
         return resolvedValue;
     }

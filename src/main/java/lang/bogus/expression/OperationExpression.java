@@ -1,6 +1,6 @@
-package lang.bogus.statement;
+package lang.bogus.expression;
 
-import lang.bogus.lexer.BogusToken;
+import lang.bogus.lexer.token.BogusToken;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.IntegerValue;
 import lang.bogus.value.Value;

@@ -1,8 +1,6 @@
 package lang.bogus.statement;
 
 import lang.bogus.runtime.BogusScope;
-import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
 import lang.bogus.value.Value;
 
 import java.util.List;

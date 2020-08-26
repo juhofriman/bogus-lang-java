@@ -1,8 +1,10 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
-import lang.bogus.statement.Identifier;
+import lang.bogus.expression.Expression;
+import lang.bogus.expression.IdentifierExpression;
 
 /**
  * Created by juhof on 29.7.2020.
@@ -13,7 +15,7 @@ public class IdentifierToken extends BogusToken {
     }
 
     @Override
-    protected TokenType type() {
+    public TokenType type() {
         return TokenType.IDENTIFIER;
     }
 
@@ -30,6 +32,6 @@ public class IdentifierToken extends BogusToken {
 
     @Override
     public Expression parsePrefix(BogusLexer lexer) {
-        return new Identifier(this);
+        return new IdentifierExpression(this);
     }
 }

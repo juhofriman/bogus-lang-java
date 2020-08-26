@@ -1,5 +1,8 @@
 package lang.bogus.lexer;
 
+import lang.bogus.lexer.token.BogusToken;
+import lang.bogus.lexer.token.TokenType;
+
 public class ExpectingTokenException extends SourceCodeAwareException {
 
     private final TokenType expected;

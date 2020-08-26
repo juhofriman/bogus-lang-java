@@ -1,18 +1,17 @@
-package lang.bogus.statement;
+package lang.bogus.expression;
 
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.value.FunctionValue;
-import lang.bogus.value.IntegerValue;
 import lang.bogus.value.Value;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class FunctionCall implements Expression {
-    private final Identifier identifier;
+public class FunctionCallExpression implements Expression {
+    private final IdentifierExpression identifier;
     private final List<Expression> arguments;
 
-    public FunctionCall(Identifier identifier, List<Expression> arguments) {
+    public FunctionCallExpression(IdentifierExpression identifier, List<Expression> arguments) {
         this.identifier = identifier;
         this.arguments = arguments;
     }
@@ -37,7 +36,7 @@ public class FunctionCall implements Expression {
 
             return fn.call(new BogusScope(scope), resolvedArgs);
         }
-        System.out.println(resolve.getClass());
-        return new IntegerValue(123);
+        // TODO: maybe throw?
+        return resolve;
     }
 }

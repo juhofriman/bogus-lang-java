@@ -1,5 +1,7 @@
 package lang.bogus.lexer;
 
+import lang.bogus.lexer.token.BogusToken;
+import lang.bogus.lexer.token.TokenType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

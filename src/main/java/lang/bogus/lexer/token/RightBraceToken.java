@@ -1,7 +1,9 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
+import lang.bogus.expression.Expression;
 
 /**
  * Created by juhof on 31.7.2020.
@@ -12,7 +14,7 @@ public class RightBraceToken extends BogusToken {
     }
 
     @Override
-    protected TokenType type() {
+    public TokenType type() {
         return TokenType.RIGHT_BRACE;
     }
 

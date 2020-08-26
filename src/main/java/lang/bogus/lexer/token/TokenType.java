@@ -1,4 +1,4 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
 /**
  * Created by juhof on 29.7.2020.

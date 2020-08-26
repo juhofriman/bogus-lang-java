@@ -1,6 +1,7 @@
 package lang.bogus.runtime;
 
-import lang.bogus.statement.Identifier;
+import lang.bogus.lang.bogus.inspector.Deck;
+import lang.bogus.expression.IdentifierExpression;
 import lang.bogus.value.Value;
 
 import java.util.HashMap;
@@ -22,22 +23,22 @@ public class BogusScope {
         this.parentScope = parentScope;
     }
 
-    public void store(Identifier identifier, Value value) {
-        System.out.println("Storing " + identifier);
+    public void store(IdentifierExpression identifier, Value value) {
+        Deck.message("Storing " + identifier);
         this.registry.put(identifier.getName(), value);
     }
 
-    public Value resolve(Identifier identifier) {
+    public Value resolve(IdentifierExpression identifier) {
 
         Value value = this.registry.get(identifier.getName());
         if(value == null) {
-            System.out.println("resolving " + identifier + "from parent");
+            Deck.message("resolving " + identifier + "from parent");
             if(this.parentScope != null) {
                 return this.parentScope.resolve(identifier);
             }
             return null;
         } else {
-            System.out.println("resolved " + identifier);
+            Deck.message("resolved " + identifier);
             return value;
         }
     }

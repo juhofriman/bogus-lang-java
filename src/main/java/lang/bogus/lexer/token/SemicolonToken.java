@@ -1,24 +1,23 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
+import lang.bogus.expression.Expression;
 
-/**
- * Created by juhof on 29.7.2020.
- */
-public class RightParensToken extends BogusToken {
-    public RightParensToken(RawLiteral literal) {
+public class SemicolonToken extends BogusToken {
+    public SemicolonToken(RawLiteral literal) {
         super(literal);
     }
 
     @Override
-    protected TokenType type() {
-        return TokenType.RIGHT_PARENS;
+    public TokenType type() {
+        return TokenType.SEMICOLON;
     }
 
     @Override
     public BogusStatement parse(BogusLexer lexer) {
-        return parseExpression(lexer);
+        return null;
     }
 
     @Override
@@ -28,7 +27,7 @@ public class RightParensToken extends BogusToken {
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
+        lexer.next();
         return left;
     }
-
 }

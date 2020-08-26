@@ -1,8 +1,10 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
-import lang.bogus.statement.Identifier;
+import lang.bogus.expression.Expression;
+import lang.bogus.expression.IdentifierExpression;
 import lang.bogus.statement.LetStatement;
 
 /**
@@ -10,12 +12,12 @@ import lang.bogus.statement.LetStatement;
  */
 public class LetToken extends BogusToken {
 
-    protected LetToken(RawLiteral literal) {
+    public LetToken(RawLiteral literal) {
         super(literal);
     }
 
     @Override
-    protected TokenType type() {
+    public TokenType type() {
         return TokenType.LET;
     }
 
@@ -24,7 +26,7 @@ public class LetToken extends BogusToken {
         BogusToken identifier = lexer.next(TokenType.IDENTIFIER);
         lexer.next(TokenType.EQUALS);
         Expression expression = lexer.next().parseExpression(lexer);
-        return new LetStatement(new Identifier(identifier), expression);
+        return new LetStatement(new IdentifierExpression(identifier), expression);
     }
 
 }

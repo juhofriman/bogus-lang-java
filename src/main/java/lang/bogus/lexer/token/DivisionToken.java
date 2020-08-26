@@ -1,26 +1,27 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
-import lang.bogus.statement.Expression;
-import lang.bogus.statement.OperationExpression;
-import lang.bogus.statement.PrefixExpression;
+import lang.bogus.expression.Expression;
+import lang.bogus.expression.OperationExpression;
 
 /**
  * Created by juhof on 31.7.2020.
  */
-public class MultiplicationToken extends BogusToken {
-    public MultiplicationToken(RawLiteral literal) {
+public class DivisionToken extends BogusToken {
+    public DivisionToken(RawLiteral literal) {
         super(literal);
     }
 
     @Override
-    protected TokenType type() {
-        return TokenType.MULTIPLICATION;
+    public TokenType type() {
+        return TokenType.DIVISION;
     }
 
     @Override
     public BogusStatement parse(BogusLexer lexer) {
-        return super.parseExpression(lexer);
+        return super.parseExpression(lexer, 0);
     }
 
     @Override

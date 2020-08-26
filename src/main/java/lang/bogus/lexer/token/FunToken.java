@@ -1,5 +1,9 @@
-package lang.bogus.lexer;
+package lang.bogus.lexer.token;
 
+import lang.bogus.expression.Expression;
+import lang.bogus.expression.IdentifierExpression;
+import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.*;
 
 import java.util.LinkedList;
@@ -14,7 +18,7 @@ public class FunToken extends BogusToken {
     }
 
     @Override
-    protected TokenType type() {
+    public TokenType type() {
         return TokenType.FUN;
     }
 
@@ -25,12 +29,12 @@ public class FunToken extends BogusToken {
     @Override
     public BogusStatement parse(BogusLexer lexer) {
         BogusToken identifier = lexer.next(TokenType.IDENTIFIER);
-        List<Identifier> arguments = new LinkedList<>();
+        List<IdentifierExpression> arguments = new LinkedList<>();
         lexer.next(TokenType.LEFT_PARENS);
         BogusToken next = lexer.next();
         while (!next.getLiteral().literal.equals(")")) {
             if(next instanceof IdentifierToken) {
-                arguments.add(new Identifier(next));
+                arguments.add(new IdentifierExpression(next));
                 next = lexer.next();
                 if(next.getLiteral().literal.equals(",")) {
                     next = lexer.next();
@@ -44,11 +48,11 @@ public class FunToken extends BogusToken {
         next = lexer.next();
         if(next.type() == TokenType.EQUALS) {
             Expression expression = lexer.next().parseExpression(lexer);
-            return new FunctionStatement(new Identifier(identifier), arguments, expression);
+            return new FunctionStatement(new IdentifierExpression(identifier), arguments, expression);
         }
         if(next.type() == TokenType.LEFT_BRACE) {
             BogusStatement statement = next.parse(lexer);
-            return new FunctionStatement(new Identifier(identifier), arguments, statement);
+            return new FunctionStatement(new IdentifierExpression(identifier), arguments, statement);
         }
         throw new RuntimeException("Expecting = or {, encountered " + next);
 

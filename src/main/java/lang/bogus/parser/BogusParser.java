@@ -1,7 +1,7 @@
 package lang.bogus.parser;
 
 import lang.bogus.lexer.BogusLexer;
-import lang.bogus.lexer.BogusToken;
+import lang.bogus.lexer.token.BogusToken;
 import lang.bogus.statement.BogusStatement;
 
 import java.util.LinkedList;
