@@ -1,6 +1,7 @@
 package lang.bogus;
 
 import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.BogusToken;
 import lang.bogus.parser.BogusParser;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.statement.BogusStatement;
@@ -12,22 +13,43 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-/**
- * Hello world!
- *
- */
+enum Mode {
+    LEX, PARSE, EVAL
+}
+
 public class BogusRepl {
-    public static void main( String[] args ) {
+
+    private Mode currentMode = Mode.EVAL;
+
+    public static void main(String[] args) {
+        new BogusRepl().run();
+    }
+
+    public void run() {
         try (Scanner scanner = new Scanner(System.in)) {
 
             Supplier<String> input = () -> {
-                System.out.print("bogus> ");
+                switch (currentMode) {
+                    case LEX: {
+                        System.out.print("bogus :lex> ");
+                        break;
+                    }
+                    case PARSE: {
+                        System.out.print("bogus :parse> ");
+                        break;
+                    }
+                    case EVAL: {
+                        System.out.print("bogus> ");
+                        break;
+                    }
+                }
                 return scanner.nextLine();
             };
 
             String quit = ":quit";
-            String lex = ":lex ";
-            String parse = ":parse ";
+            String lex = ":lex";
+            String parse = ":parse";
+            String eval = ":eval";
             BogusScope root = new BogusScope();
             Function<String, String> expressionHandler = expression -> {
 
@@ -41,17 +63,36 @@ public class BogusRepl {
                     }
 
                     if (expression.startsWith(lex)) {
-                        BogusLexer bogusLexer = new BogusLexer(expression.substring(lex.length()));
-                        System.out.println(bogusLexer.getTokens());
+                        currentMode = Mode.LEX;
                         return expression;
                     }
 
                     if (expression.startsWith(parse)) {
-                        BogusParser bogusParser = new BogusParser(new BogusLexer(expression.substring(parse.length())));
+                        currentMode = Mode.PARSE;
+                        return expression;
+                    }
+
+                    if (expression.startsWith(eval)) {
+                        currentMode = Mode.EVAL;
+                        return expression;
+                    }
+
+                    BogusLexer bogusLexer = new BogusLexer(expression);
+                    if(currentMode == Mode.LEX) {
+                        System.out.println("[");
+                        for (BogusToken token : bogusLexer.getTokens()) {
+                            System.out.println("\t" + token);
+                        }
+                        System.out.println("]");
+                        return expression;
+                    }
+
+                    BogusParser bogusParser = new BogusParser(bogusLexer);
+                    if(currentMode == Mode.PARSE) {
                         System.out.println(bogusParser.parse());
                         return expression;
                     }
-                    BogusParser bogusParser = new BogusParser(new BogusLexer(expression));
+
                     Value r = null;
                     for (BogusStatement bogusStatement : bogusParser.parse()) {
                         r = bogusStatement.evaluate(root);

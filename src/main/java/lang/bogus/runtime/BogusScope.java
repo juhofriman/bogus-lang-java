@@ -14,7 +14,6 @@ public class BogusScope {
     private Map<String, Value> registry = new HashMap<>();
 
     public void store(Identifier identifier, Value value) {
-        System.out.println("Storing " + identifier);
         this.registry.put(identifier.getName(), value);
     }
 
