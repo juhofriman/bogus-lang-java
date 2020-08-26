@@ -37,11 +37,11 @@ mvn package && java -cp target/bogus-1.0-SNAPSHOT.jar lang.bogus.Bogus program.b
 
 Nothing really fancy. Features under work:
 
-- [] Lambda expressions `(a) => a`
-- [] Closures
-- [] Standard Library (like `type(a)`)
-- [] Modules `import lib.bogus`
-- [] Java interop 😂 `let a = *java.lang.StringBuffer() -> new StringBuffer()`
+- [ ] Lambda expressions `(a) => a`
+- [ ] Closures
+- [ ] Standard Library (like `type(a)`)
+- [ ] Modules `import lib.bogus`
+- [ ] Java interop 😂 `let a = *java.lang.StringBuffer() -> new StringBuffer()`
 
 Probably will not implement
 
