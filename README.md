@@ -39,6 +39,7 @@ Nothing really fancy. Features under work:
 
 - [ ] Lambda expressions `(a) => a`
 - [ ] Closures
+- [ ] Structs or similar
 - [ ] Standard Library (like `type(a)`)
 - [ ] Modules `import lib.bogus`
 - [ ] Java interop 😂 `let a = *java.lang.StringBuffer() -> new StringBuffer()`
