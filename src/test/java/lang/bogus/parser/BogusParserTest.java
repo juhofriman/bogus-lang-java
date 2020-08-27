@@ -28,43 +28,43 @@ public class BogusParserTest {
 
     @Test
     public void testLiteralExpressions() {
-        assertParsing("1", 1, (List<BogusStatement> statements) -> {
+        assertParsing("1", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(IntegerExpression.class, statements.get(0).getClass());
         });
 
-        assertParsing("\"String\"", 1, (List<BogusStatement> statements) -> {
+        assertParsing("\"String\"", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(StringExpression.class, statements.get(0).getClass());
         });
     }
 
     @Test
     public void testArithmeticExpressions() {
-        assertParsing("1 + 1", 1, (List<BogusStatement> statements) -> {
+        assertParsing("1 + 1", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(2), statements.get(0).evaluate(new BogusScope()));
         });
 
-        assertParsing("(1 + 1)", 1, (List<BogusStatement> statements) -> {
+        assertParsing("(1 + 1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(2), statements.get(0).evaluate(new BogusScope()));
         });
 
-        assertParsing("(1) + (1)", 1, (List<BogusStatement> statements) -> {
+        assertParsing("(1) + (1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(2), statements.get(0).evaluate(new BogusScope()));
         });
 
-        assertParsing("(1 + 1) + (1)", 1, (List<BogusStatement> statements) -> {
+        assertParsing("(1 + 1) + (1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(3), statements.get(0).evaluate(new BogusScope()));
         });
 
-        assertParsing("(1 + (1 + 1)) + (1)", 1, (List<BogusStatement> statements) -> {
+        assertParsing("(1 + (1 + 1)) + (1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(4), statements.get(0).evaluate(new BogusScope()));
         });
 
-        assertParsing("(((1 + (1 + 1)) + (1 + (1 + 1 + (1 + 1))))", 1, (List<BogusStatement> statements) -> {
+        assertParsing("(((1 + (1 + 1)) + (1 + (1 + 1 + (1 + 1))))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(8), statements.get(0).evaluate(new BogusScope()));
         });
@@ -72,7 +72,7 @@ public class BogusParserTest {
 
     @Test
     public void testFunctionDefinition() {
-        assertParsing("fun x(a) = a", 1, (List<BogusStatement> statements) -> {
+        assertParsing("fun x(a) = a", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionStatement.class, statements.get(0).getClass());
             FunctionStatement fn = (FunctionStatement) statements.get(0);
             BogusScope captureScope = new BogusScope();
@@ -82,7 +82,7 @@ public class BogusParserTest {
             assertEquals(new IntegerValue(1), fnValue.call(captureScope, createArgs(new IntegerValue(1))));
         });
 
-        assertParsing("fun x(a) { return a; }", 1, (List<BogusStatement> statements) -> {
+        assertParsing("fun x(a) { return a; }", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionStatement.class, statements.get(0).getClass());
             FunctionStatement fn = (FunctionStatement) statements.get(0);
             BogusScope captureScope = new BogusScope();
@@ -93,7 +93,7 @@ public class BogusParserTest {
         });
 
 
-        assertParsing("fun x(a) { let b = 2; return a + b; }", 1, (List<BogusStatement> statements) -> {
+        assertParsing("fun x(a) { let b = 2; return a + b; }", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionStatement.class, statements.get(0).getClass());
             FunctionStatement fn = (FunctionStatement) statements.get(0);
             BogusScope captureScope = new BogusScope();
@@ -102,6 +102,32 @@ public class BogusParserTest {
             FunctionValue fnValue = (FunctionValue) captureScope.resolve(dummyIdentifier("x"));
             assertEquals(new IntegerValue(3), fnValue.call(captureScope, createArgs(new IntegerValue(1))));
         });
+    }
+
+    @Test
+    public void multistatementParsing() {
+        assertParsing(multiline(
+                "let a = 1;",
+                "let b = 2;",
+                "let c = 3;"
+        ), statementCountMustBe(3), (List<BogusStatement> statements) -> {
+            assertEquals(LetStatement.class, statements.get(0).getClass());
+            assertEquals(LetStatement.class, statements.get(1).getClass());
+            assertEquals(LetStatement.class, statements.get(2).getClass());
+        });
+    }
+
+    private int statementCountMustBe(int i) {
+        return i;
+    }
+
+    private String multiline(String ... lines) {
+        StringBuffer sb = new StringBuffer();
+        for (String line : lines) {
+            sb.append(line);
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
     private LinkedList<Value> createArgs(Value ... values) {

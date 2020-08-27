@@ -1,6 +1,7 @@
 package lang.bogus;
 
 import lang.bogus.lexer.BogusLexer;
+import lang.bogus.lexer.token.BogusToken;
 import lang.bogus.parser.BogusParser;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.statement.BogusStatement;
@@ -42,9 +43,20 @@ public class Bogus {
         }
 
         BogusScope bogusScope = new BogusScope();
-        List<BogusStatement> statements = new BogusParser(new BogusLexer(readSource(args[0]))).parse();
+
+        BogusLexer bogusLexer = new BogusLexer(readSource(args[0]));
+
+        System.out.println("[");
+        for (BogusToken token : bogusLexer.getTokens()) {
+            System.out.println("\t" + token);
+        }
+        System.out.println("]");
+
+        List<BogusStatement> statements = new BogusParser(bogusLexer).parse();
+
         Value value = null;
         for (BogusStatement statement : statements) {
+            System.out.println("Eval " + statement);
             value = statement.evaluate(bogusScope);
         }
         System.out.println(value.asString());
