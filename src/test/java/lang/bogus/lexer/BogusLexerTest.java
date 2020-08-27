@@ -20,24 +20,37 @@ public class BogusLexerTest {
 
     @Test
     public void lexesTokensAsExpected() {
-        assertSingleTokenMatches("let", TokenType.LET);
-        assertSingleTokenMatches("return", TokenType.RETURN);
-        assertSingleTokenMatches("fun", TokenType.FUN);
-        assertSingleTokenMatches("(", TokenType.LEFT_PARENS);
-        assertSingleTokenMatches(")", TokenType.RIGHT_PARENS);
-        assertSingleTokenMatches("{", TokenType.LEFT_BRACE);
-        assertSingleTokenMatches("}", TokenType.RIGHT_BRACE);
+        assertTokensMatch("let", TokenType.LET);
+        assertTokensMatch("return", TokenType.RETURN);
+        assertTokensMatch("fun", TokenType.FUN);
+        assertTokensMatch("(", TokenType.LEFT_PARENS);
+        assertTokensMatch(")", TokenType.RIGHT_PARENS);
+        assertTokensMatch("{", TokenType.LEFT_BRACE);
+        assertTokensMatch("}", TokenType.RIGHT_BRACE);
 
-        assertSingleTokenMatches("12", TokenType.INT);
-        assertSingleTokenMatches("\"Hello\"", TokenType.STRING);
-        assertSingleTokenMatches("=", TokenType.EQUALS);
-        assertSingleTokenMatches("+", TokenType.PLUS);
-        assertSingleTokenMatches("-", TokenType.MINUS);
-        assertSingleTokenMatches("*", TokenType.MULTIPLICATION);
-        assertSingleTokenMatches("/", TokenType.DIVISION);
-        assertSingleTokenMatches("myvar", TokenType.IDENTIFIER);
-        assertSingleTokenMatches(",", TokenType.COMMA);
-        assertSingleTokenMatches(";", TokenType.SEMICOLON);
+        assertTokensMatch("12", TokenType.INT);
+        assertTokensMatch("\"Hello\"", TokenType.STRING);
+        assertTokensMatch("=", TokenType.EQUALS);
+        assertTokensMatch("+", TokenType.PLUS);
+        assertTokensMatch("-", TokenType.MINUS);
+        assertTokensMatch("*", TokenType.MULTIPLICATION);
+        assertTokensMatch("/", TokenType.DIVISION);
+        assertTokensMatch("myvar", TokenType.IDENTIFIER);
+        assertTokensMatch(",", TokenType.COMMA);
+        assertTokensMatch(";", TokenType.SEMICOLON);
+    }
+
+    @Test
+    public void testTokenCombinations() {
+        assertTokensMatch("(1)", TokenType.LEFT_PARENS, TokenType.INT, TokenType.RIGHT_PARENS);
+        assertTokensMatch("( 1 )", TokenType.LEFT_PARENS, TokenType.INT, TokenType.RIGHT_PARENS);
+        assertTokensMatch("a(b, c)",
+                TokenType.IDENTIFIER,
+                TokenType.LEFT_PARENS,
+                TokenType.IDENTIFIER,
+                TokenType.COMMA,
+                TokenType.IDENTIFIER,
+                TokenType.RIGHT_PARENS);
     }
 
     @Test
@@ -83,12 +96,16 @@ public class BogusLexerTest {
         lexer.next(TokenType.FUN);
     }
 
-    private void assertSingleTokenMatches(String source, TokenType expected) {
+    private void assertTokensMatch(String source, TokenType ... expected) {
         BogusLexer lexer = lexerFromSource(source);
-        assertTrue(lexer.hasNext());
-        BogusToken next = lexer.next();
-        assertTokenMatches(expected, next);
-        assertFalse(lexer.hasNext());
+        assertTrue("Lexer was empty", lexer.hasNext());
+
+        for (TokenType tokenType : expected) {
+            BogusToken next = lexer.next();
+            assertTokenMatches(tokenType, next);
+        }
+
+        assertFalse("Lexer was not empty", lexer.hasNext());
     }
 
     private void assertTokenMatches(TokenType expected, BogusToken next) {
