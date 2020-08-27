@@ -18,6 +18,11 @@ public class IntegerValue implements Value {
         return String.valueOf(this.value);
     }
 
+    @Override
+    public String typeString() {
+        return "int";
+    }
+
     public int getValue() {
         return value;
     }

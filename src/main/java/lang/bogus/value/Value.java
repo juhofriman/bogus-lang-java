@@ -7,4 +7,5 @@ public interface Value {
 
     public String asString();
 
+    String typeString();
 }

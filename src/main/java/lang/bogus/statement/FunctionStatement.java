@@ -29,17 +29,16 @@ public class FunctionStatement implements BogusStatement {
 
     @Override
     public Value evaluate(BogusScope scope) {
+        FunctionValue fn = null;
         if(this.expression != null) {
+            fn = new FunctionValue(this.identifier, this.arguments, this.expression);
             scope.store(this.identifier, new FunctionValue(this.identifier, this.arguments, this.expression));
         }
         if(this.statement != null) {
-            scope.store(this.identifier, new FunctionValue(this.identifier, this.arguments, this.statement));
+            fn = new FunctionValue(this.identifier, this.arguments, this.statement);
+
         }
-        return new Value() {
-            @Override
-            public String asString() {
-                return "type[FN]";
-            }
-        };
+        scope.store(this.identifier, fn);
+        return fn;
     }
 }

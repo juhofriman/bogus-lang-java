@@ -1,5 +1,6 @@
 package lang.bogus.value;
 
+import lang.bogus.expression.IntegerExpression;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.statement.BogusStatement;
 import lang.bogus.expression.Expression;
@@ -26,13 +27,22 @@ public class FunctionValue implements Value {
         this.statement = statement;
     }
 
+
     @Override
     public String asString() {
         return "fn " + this.name + "[" + this.arguments.size() + "]";
     }
 
+    @Override
+    public String typeString() {
+        return "fn";
+    }
 
-    public Value call(BogusScope bogusScope, LinkedList<Value> callArguments) {
+
+    public Value call(BogusScope bogusScope, List<Value> callArguments) {
+        if(callArguments.size() != this.arguments.size()) {
+            throw new IncorrectArityException(this.name, this.arguments.size(), callArguments.size());
+        }
         int i = 0;
         for (IdentifierExpression argument : this.arguments) {
             bogusScope.store(argument, callArguments.get(i));

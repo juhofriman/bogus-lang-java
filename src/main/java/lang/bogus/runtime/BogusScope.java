@@ -16,7 +16,7 @@ public class BogusScope {
     private BogusScope parentScope;
 
     public BogusScope() {
-
+        this.registry = BogusStd.create();
     }
 
     public BogusScope(BogusScope parentScope) {

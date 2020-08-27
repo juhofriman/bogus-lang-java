@@ -15,6 +15,10 @@ public class IdentifierExpression implements Expression {
         name = token.getLiteral().literal;
     }
 
+    public IdentifierExpression(String name) {
+        this.name = name;
+    }
+
     @Override
     public Value evaluate(BogusScope scope) {
         Value resolvedValue = scope.resolve(this);
