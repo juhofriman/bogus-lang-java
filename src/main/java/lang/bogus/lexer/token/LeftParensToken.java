@@ -39,6 +39,9 @@ public class LeftParensToken extends BogusToken {
             List<Expression> arguments = new LinkedList<>();
             BogusToken next = lexer.next();
             while (next != null && lexer.hasNext()) {
+                if(next.type() == TokenType.RIGHT_PARENS) {
+                    break;
+                }
 
                 arguments.add(next.parseExpression(lexer));
                 next = lexer.next();

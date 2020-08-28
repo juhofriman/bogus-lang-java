@@ -8,7 +8,7 @@ public enum TokenType {
     RETURN(null, 1),
     FUN(null, 1),
     LEFT_PARENS(0, 50),
-    RIGHT_PARENS(null, 1),
+    RIGHT_PARENS(null, 0),
     LEFT_BRACE(1, 1),
     RIGHT_BRACE(1, 1),
     INT(null, 1),
