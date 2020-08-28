@@ -15,6 +15,12 @@ public class OperationExpression implements Expression {
     private final Expression right;
 
     public OperationExpression(BogusToken token, Expression left, Expression right) {
+        if(left == null) {
+            throw new IllegalArgumentException("Left expression is null");
+        }
+        if(right == null) {
+            throw new IllegalArgumentException("Right expression is null");
+        }
         this.token = token;
         this.left = left;
         this.right = right;

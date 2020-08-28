@@ -38,9 +38,14 @@ public abstract class BogusToken {
 
     protected final Expression parseExpression(BogusLexer lexer, int precedence) {
         Expression leftExpression = this.parsePrefix(lexer);
-       if (!lexer.hasNext()) {
-           return leftExpression;
+        if (!lexer.hasNext()) {
+            return leftExpression;
+        } else {
+            if(lexer.lookahead(1) != null && lexer.lookahead(1).type() == TokenType.SEMICOLON) {
+                return leftExpression;
+            }
         }
+
         while (lexer.lookahead(0) != null && precedence < lexer.lookahead(0).type().getInfixBindingPower()) {
             leftExpression = lexer.next().parseInfix(lexer, leftExpression);
         }
@@ -59,5 +64,7 @@ public abstract class BogusToken {
 
     public boolean is(TokenType identifier) {
         return this.type() == identifier;
-    };
+    }
+
+    ;
 }

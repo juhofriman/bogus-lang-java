@@ -1,5 +1,6 @@
 package lang.bogus.lexer.token;
 
+import lang.bogus.lang.bogus.inspector.Deck;
 import lang.bogus.lexer.BogusLexer;
 import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
@@ -20,7 +21,7 @@ public class RightParensToken extends BogusToken {
 
     @Override
     public BogusStatement parse(BogusLexer lexer) {
-        return parseExpression(lexer);
+        return parseExpression(lexer, type().getInfixBindingPower() + 1);
     }
 
     @Override
