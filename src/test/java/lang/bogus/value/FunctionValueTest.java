@@ -30,8 +30,7 @@ public class FunctionValueTest extends ValueTest {
                 identifiers(new IdentifierExpression("a")),
                 ie);
 
-        Value producedValue = fn.call(new BogusScope(), values());
-        assertEquals(ie.evaluate(new BogusScope()), producedValue);
+        fn.call(new BogusScope(), values());
     }
 
     @Test(expected = IncorrectArityException.class)
@@ -41,7 +40,7 @@ public class FunctionValueTest extends ValueTest {
                 identifiers(new IdentifierExpression("a")),
                 ie);
 
-        Value producedValue = fn.call(new BogusScope(), values(new IntegerValue(1), new IntegerValue(2)));
-        assertEquals(ie.evaluate(new BogusScope()), producedValue);
+        fn.call(new BogusScope(), values(new IntegerValue(1), new IntegerValue(2)));
+
     }
 }

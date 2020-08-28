@@ -5,7 +5,7 @@ package lang.bogus.lang.bogus.inspector;
  */
 public class Deck {
 
-    private static boolean output = false;
+    private static boolean output = true;
 
     private Deck() {}
 

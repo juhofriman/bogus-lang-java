@@ -1,9 +1,6 @@
 package lang.bogus.parser;
 
-import lang.bogus.expression.IdentifierExpression;
-import lang.bogus.expression.IntegerExpression;
-import lang.bogus.expression.OperationExpression;
-import lang.bogus.expression.StringExpression;
+import lang.bogus.expression.*;
 import lang.bogus.lexer.BogusLexer;
 import lang.bogus.lexer.token.IdentifierToken;
 import lang.bogus.lexer.RawLiteral;
@@ -71,6 +68,63 @@ public class BogusParserTest {
     }
 
     @Test
+    public void testFnCall() {
+        assertParsing("foo()", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(0, call.getArguments().size());
+        });
+
+        assertParsing("foo(1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(1, call.getArguments().size());
+            assertEquals(IntegerExpression.class, call.getArguments().get(0).getClass());
+        });
+
+        assertParsing("foo(\"bar\")", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(1, call.getArguments().size());
+            assertEquals(StringExpression.class, call.getArguments().get(0).getClass());
+        });
+
+        assertParsing("foo(1, 2)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(2, call.getArguments().size());
+            assertEquals(IntegerExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(IntegerExpression.class, call.getArguments().get(1).getClass());
+        });
+
+        assertParsing("foo(\"bar\", 2)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(2, call.getArguments().size());
+            assertEquals(StringExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(IntegerExpression.class, call.getArguments().get(1).getClass());
+        });
+
+        assertParsing("foo(1, \"bar\")", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(2, call.getArguments().size());
+            assertEquals(IntegerExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(StringExpression.class, call.getArguments().get(1).getClass());
+        });
+
+        assertParsing(multiline("foo();",  "bar();"), statementCountMustBe(2), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            assertEquals(FunctionCallExpression.class, statements.get(1).getClass());
+        });
+
+        assertParsing(multiline("foo(1);",  "bar(2);"), statementCountMustBe(2), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            assertEquals(FunctionCallExpression.class, statements.get(1).getClass());
+        });
+    }
+
+    @Test
     public void testFunctionDefinition() {
         assertParsing("fun x(a) = a", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionStatement.class, statements.get(0).getClass());
@@ -105,11 +159,38 @@ public class BogusParserTest {
     }
 
     @Test
-    public void multistatementParsing() {
+    public void multiStatementParsing() {
         assertParsing(multiline(
                 "let a = 1;",
                 "let b = 2;",
                 "let c = 3;"
+        ), statementCountMustBe(3), (List<BogusStatement> statements) -> {
+            assertEquals(LetStatement.class, statements.get(0).getClass());
+            assertEquals(LetStatement.class, statements.get(1).getClass());
+            assertEquals(LetStatement.class, statements.get(2).getClass());
+        });
+
+        assertParsing(multiline(
+                "let a = x(1);",
+                "let b = 2;",
+                "let c = 3;"
+        ), statementCountMustBe(3), (List<BogusStatement> statements) -> {
+            assertEquals(LetStatement.class, statements.get(0).getClass());
+            assertEquals(LetStatement.class, statements.get(1).getClass());
+            assertEquals(LetStatement.class, statements.get(2).getClass());
+        });
+    }
+
+    @Test
+    public void complexCode() {
+        assertParsing(multiline(
+                "fun x() {",
+                "    let a = 5;",
+                "    let b = 3;",
+                "    return  a + b;",
+                "}",
+                "let value = x();",
+                "let value2 = x();"
         ), statementCountMustBe(3), (List<BogusStatement> statements) -> {
             assertEquals(LetStatement.class, statements.get(0).getClass());
             assertEquals(LetStatement.class, statements.get(1).getClass());
@@ -145,6 +226,7 @@ public class BogusParserTest {
 
     private void assertParsing(String s, int expectedStatementCount, StatementAssertionFunction o) {
         List<BogusStatement> statements = new BogusParser(new BogusLexer(s)).parse();
+        System.out.println(statements);
         assertEquals(expectedStatementCount, statements.size());
         o.run(statements);
     }

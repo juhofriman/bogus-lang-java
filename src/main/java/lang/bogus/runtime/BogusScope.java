@@ -23,6 +23,25 @@ public class BogusScope {
         this.parentScope = parentScope;
     }
 
+    private void echoIndented(int indentation, String message) {
+        // OMG
+        for(int i = 0; i < indentation; i++) {
+            System.out.print(" ");
+        }
+        System.out.println(message);
+    }
+
+    public void echoScope(int indentation) {
+        this.echoIndented(indentation, "{");
+        for (Map.Entry<String, Value> keys : this.registry.entrySet()) {
+            this.echoIndented(indentation + 1, keys.getKey() + " -> " + keys.getValue());
+        }
+        if(this.parentScope != null) {
+            this.parentScope.echoScope(indentation + 1);
+        }
+        this.echoIndented(indentation, "}");
+    }
+
     public void store(IdentifierExpression identifier, Value value) {
         Deck.message("Storing " + identifier);
         this.registry.put(identifier.getName(), value);

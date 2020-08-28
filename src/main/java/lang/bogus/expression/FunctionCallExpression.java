@@ -16,6 +16,10 @@ public class FunctionCallExpression implements Expression {
         this.arguments = arguments;
     }
 
+    public List<Expression> getArguments() {
+        return arguments;
+    }
+
     @Override
     public String toString() {
         return "fnCall " + this.identifier + "(" + this.arguments + ")";
@@ -30,8 +34,11 @@ public class FunctionCallExpression implements Expression {
         if(resolve instanceof FunctionValue) {
             FunctionValue fn = (FunctionValue) resolve;
             LinkedList<Value> resolvedArgs = new LinkedList<>();
-            for (Expression argument : this.arguments) {
-                resolvedArgs.add(argument.evaluate(scope));
+            if(this.arguments != null) {
+                for (Expression argument : this.arguments) {
+                    System.out.println(argument);
+                    resolvedArgs.add(argument.evaluate(scope));
+                }
             }
 
             return fn.call(new BogusScope(scope), resolvedArgs);
