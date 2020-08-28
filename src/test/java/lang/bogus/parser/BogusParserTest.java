@@ -181,18 +181,18 @@ public class BogusParserTest {
         });
     }
 
-    //@Test
+    @Test
     public void complexCode() {
         assertParsing(multiline(
                 "fun x() {",
                 "    let a = 5;",
                 "    let b = 3;",
                 "    return  a + b;",
-                "}",
+                "};",
                 "let value = x();",
                 "let value2 = x();"
         ), statementCountMustBe(3), (List<BogusStatement> statements) -> {
-            assertEquals(LetStatement.class, statements.get(0).getClass());
+            assertEquals(FunctionStatement.class, statements.get(0).getClass());
             assertEquals(LetStatement.class, statements.get(1).getClass());
             assertEquals(LetStatement.class, statements.get(2).getClass());
         });

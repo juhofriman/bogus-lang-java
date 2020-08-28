@@ -26,14 +26,15 @@ public class LeftBraceToken extends BogusToken {
     public BogusStatement parse(BogusLexer lexer) {
         List<BogusStatement> expressions = new LinkedList<>();
         BogusToken next = lexer.next();
-
-        while(next != null && next.getLiteral().literal != "}") {
+        while (next != null && lexer.hasNext()) {
+            if(next.type() == TokenType.RIGHT_BRACE) {
+                break;
+            }
             BogusStatement parse = next.parse(lexer);
             if(parse != null) {
                 expressions.add(parse);
             }
             next = lexer.next();
-
         }
 
         Deck.message(expressions);

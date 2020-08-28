@@ -9,7 +9,7 @@ public enum TokenType {
     FUN(null, 1),
     LEFT_PARENS(0, 50),
     RIGHT_PARENS(10, 1),
-    LEFT_BRACE(1, 1),
+    LEFT_BRACE(1, 50),
     RIGHT_BRACE(1, 1),
     INT(null, 1),
     STRING(1, 1),

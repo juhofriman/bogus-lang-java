@@ -28,6 +28,16 @@ public class FunctionStatement implements BogusStatement {
     }
 
     @Override
+    public String toString() {
+        return "FunctionStatement{" +
+                "identifier=" + identifier +
+                ", arguments=" + arguments +
+                ", expression=" + expression +
+                ", statement=" + statement +
+                '}';
+    }
+
+    @Override
     public Value evaluate(BogusScope scope) {
         FunctionValue fn = null;
         if(this.expression != null) {
