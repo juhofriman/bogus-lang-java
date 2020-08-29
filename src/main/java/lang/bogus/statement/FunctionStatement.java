@@ -45,7 +45,7 @@ public class FunctionStatement implements BogusStatement {
             scope.store(this.identifier, new FunctionValue(this.identifier, this.arguments, this.expression));
         }
         if(this.statement != null) {
-            fn = new FunctionValue(this.identifier, this.arguments, this.statement);
+            fn = new FunctionValue(this.identifier, this.arguments, this.statement, scope);
 
         }
         scope.store(this.identifier, fn);

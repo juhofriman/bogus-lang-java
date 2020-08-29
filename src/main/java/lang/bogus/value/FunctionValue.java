@@ -14,6 +14,7 @@ public class FunctionValue implements Value {
     private final List<IdentifierExpression> arguments;
     private Expression expression;
     private BogusStatement statement;
+    private BogusScope closure;
 
     public FunctionValue(IdentifierExpression name, List<IdentifierExpression> arguments, Expression expression) {
         this.name = name;
@@ -25,6 +26,14 @@ public class FunctionValue implements Value {
         this.name = name;
         this.arguments = arguments;
         this.statement = statement;
+    }
+
+    public FunctionValue(IdentifierExpression identifier, List<IdentifierExpression> arguments, BogusStatement statement, BogusScope closure) {
+        this.name = identifier;
+        this.arguments = arguments;
+        this.statement = statement;
+
+        this.closure = closure;
     }
 
 
@@ -40,6 +49,7 @@ public class FunctionValue implements Value {
 
 
     public Value call(BogusScope bogusScope, List<Value> callArguments) {
+
         if(callArguments.size() != this.arguments.size()) {
             throw new IncorrectArityException(this.name, this.arguments.size(), callArguments.size());
         }
@@ -50,7 +60,8 @@ public class FunctionValue implements Value {
         }
 
         if(this.statement != null) {
-            return this.statement.evaluate(bogusScope);
+            this.closure.echoScope(1);
+            return this.statement.evaluate(bogusScope.join(this.closure));
         }
 
         return this.expression.evaluate(bogusScope);

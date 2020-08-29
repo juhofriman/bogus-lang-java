@@ -62,4 +62,8 @@ public class BogusScope {
         }
     }
 
+    public BogusScope join(BogusScope closure) {
+        this.registry.putAll(closure.registry);
+        return this;
+    }
 }

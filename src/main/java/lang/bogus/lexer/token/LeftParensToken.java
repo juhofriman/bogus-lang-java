@@ -42,7 +42,6 @@ public class LeftParensToken extends BogusToken {
                 if(next.type() == TokenType.RIGHT_PARENS) {
                     break;
                 }
-
                 arguments.add(next.parseExpression(lexer));
                 next = lexer.next();
             }

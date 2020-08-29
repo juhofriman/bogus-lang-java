@@ -32,15 +32,14 @@ public class FunctionCallExpression implements Expression {
             throw new RuntimeException("No fn " + this.identifier + " in scope");
         }
         if(resolve instanceof FunctionValue) {
+
             FunctionValue fn = (FunctionValue) resolve;
             LinkedList<Value> resolvedArgs = new LinkedList<>();
             if(this.arguments != null) {
                 for (Expression argument : this.arguments) {
-                    System.out.println(argument);
                     resolvedArgs.add(argument.evaluate(scope));
                 }
             }
-
             return fn.call(new BogusScope(scope), resolvedArgs);
         }
         // TODO: maybe throw?

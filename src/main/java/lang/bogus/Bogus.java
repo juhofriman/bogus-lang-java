@@ -23,18 +23,6 @@ import java.util.stream.Stream;
  */
 public class Bogus {
 
-    private static String readSource(String filePath) {
-        String content = "";
-
-        try {
-            content = new String ( Files.readAllBytes(Paths.get(filePath)) );
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return content;
-    }
 
     public static void main( String[] args ) {
         if(args.length < 1) {
@@ -44,7 +32,7 @@ public class Bogus {
 
         BogusScope bogusScope = new BogusScope();
 
-        BogusLexer bogusLexer = new BogusLexer(readSource(args[0]));
+        BogusLexer bogusLexer = new BogusLexer(SourceReader.readSource(args[0]));
 
         System.out.println("[");
         for (BogusToken token : bogusLexer.getTokens()) {

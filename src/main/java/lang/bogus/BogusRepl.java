@@ -7,7 +7,9 @@ import lang.bogus.parser.BogusParser;
 import lang.bogus.runtime.BogusScope;
 import lang.bogus.statement.BogusStatement;
 import lang.bogus.value.Value;
+import lang.bogus.value.VoidValue;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -52,6 +54,7 @@ public class BogusRepl {
             String parse = ":parse";
             String deck = ":deck";
             String eval = ":eval";
+            String load = ":load";
             BogusScope root = new BogusScope();
             Function<String, String> expressionHandler = expression -> {
 
@@ -84,6 +87,11 @@ public class BogusRepl {
                         return expression;
                     }
 
+                    if(expression.startsWith(load)) {
+                        String source = SourceReader.readSource(expression.substring((load + " ").length()));
+                        expression = source;
+                    }
+
                     BogusLexer bogusLexer = new BogusLexer(expression);
                     if(currentMode == Mode.LEX) {
                         System.out.println("[");
@@ -96,7 +104,14 @@ public class BogusRepl {
 
                     BogusParser bogusParser = new BogusParser(bogusLexer);
                     if(currentMode == Mode.PARSE) {
-                        System.out.println(bogusParser.parse());
+                        List<BogusStatement> parsedStatements = bogusParser.parse();
+
+                        System.out.println("[");
+                        for (BogusStatement parsedStatement : parsedStatements) {
+                            System.out.println("\t" + parsedStatement);
+                        }
+                        System.out.println("]");
+
                         return expression;
                     }
 
@@ -104,7 +119,9 @@ public class BogusRepl {
                     for (BogusStatement bogusStatement : bogusParser.parse()) {
                         r = bogusStatement.evaluate(root);
                     }
-                    System.out.println(r.asString());
+                    if(!(r instanceof VoidValue)) {
+                        System.out.println(r.asString());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
