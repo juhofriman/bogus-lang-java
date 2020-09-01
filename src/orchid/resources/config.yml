@@ -1,0 +1,20 @@
+site:
+  baseUrl: 'https://www.example.com/'
+  theme: 'Editorial'
+
+theme:
+  menu:
+    - type: 'readme'
+    - type: 'license'
+wiki: # (4)
+  sections:
+    - 'userManual'
+    - 'developersGuide'
+services: # (5)
+  generators:
+    disabled:
+      - 'javadoc'
+      - 'posts'
+
+allPages: # (6)
+  layout: single
