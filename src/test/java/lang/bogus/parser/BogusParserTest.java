@@ -68,26 +68,36 @@ public class BogusParserTest {
     }
 
     @Test
-    public void testFnCall() {
+    public void testSimpleFnCall() {
         assertParsing("foo()", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
             FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
             assertEquals(0, call.getArguments().size());
         });
+    }
 
+    @Test
+    public void testFnCallWithArg() {
         assertParsing("foo(1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
             FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
             assertEquals(1, call.getArguments().size());
             assertEquals(IntegerExpression.class, call.getArguments().get(0).getClass());
         });
+    }
 
+    @Test
+    public void testFnCallWitthStringArg() {
         assertParsing("foo(\"bar\")", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
             FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
             assertEquals(1, call.getArguments().size());
             assertEquals(StringExpression.class, call.getArguments().get(0).getClass());
         });
+    }
+
+    @Test
+    public void testFnCallWithMultipleArgs() {
 
         assertParsing("foo(1, 2)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
@@ -96,6 +106,75 @@ public class BogusParserTest {
             assertEquals(IntegerExpression.class, call.getArguments().get(0).getClass());
             assertEquals(IntegerExpression.class, call.getArguments().get(1).getClass());
         });
+
+        assertParsing("foo(1, 2, 3, 4)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(4, call.getArguments().size());
+            assertEquals(IntegerExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(IntegerExpression.class, call.getArguments().get(1).getClass());
+            assertEquals(IntegerExpression.class, call.getArguments().get(2).getClass());
+            assertEquals(IntegerExpression.class, call.getArguments().get(3).getClass());
+        });
+
+    }
+
+    @Test
+    public void testNestedFnCall() {
+        assertParsing("foo(bar(1))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(1, call.getArguments().size());
+            assertEquals(FunctionCallExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(1, ((FunctionCallExpression) call.getArguments().get(0)).getArguments().size());
+        });
+    }
+
+    @Test
+    public void testNestedFnCallWithMultipleArgs() {
+        assertParsing("foo(bar(1, 2))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(1, call.getArguments().size());
+            assertEquals(FunctionCallExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(2, ((FunctionCallExpression) call.getArguments().get(0)).getArguments().size());
+        });
+    }
+
+    @Test
+    public void testYetAnotherNestedeFnCall() {
+        assertParsing("foo(bar(1, 2), 1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(2, call.getArguments().size());
+            assertEquals(FunctionCallExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(2, ((FunctionCallExpression) call.getArguments().get(0)).getArguments().size());
+        });
+
+        assertParsing("foo(1, bar(1, 2))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(2, call.getArguments().size());
+            assertEquals(IntegerExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(2, ((FunctionCallExpression) call.getArguments().get(1)).getArguments().size());
+        });
+    }
+
+    @Test
+    public void testComplexNestedFnCall() {
+        assertParsing("foo(baz(1, 2), bar(1, 2))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression rootCall = (FunctionCallExpression) statements.get(0);
+            assertEquals(2, rootCall.getArguments().size());
+
+            assertEquals(FunctionCallExpression.class, rootCall.getArguments().get(0).getClass());
+            assertEquals(2, ((FunctionCallExpression) rootCall.getArguments().get(0)).getArguments().size());
+
+        });
+    }
+
+    @Test
+    public void testFnCallWithDifferentTypes() {
 
         assertParsing("foo(\"bar\", 2)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
@@ -113,14 +192,43 @@ public class BogusParserTest {
             assertEquals(StringExpression.class, call.getArguments().get(1).getClass());
         });
 
+    }
+
+    @Test
+    public void testConsecutiveFnCalls() {
         assertParsing(multiline("foo();",  "bar();"), statementCountMustBe(2), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
             assertEquals(FunctionCallExpression.class, statements.get(1).getClass());
         });
 
+    }
+
+    @Test
+    public void testConsecutiveFnCallsWithArg() {
         assertParsing(multiline("foo(1);",  "bar(2);"), statementCountMustBe(2), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
             assertEquals(FunctionCallExpression.class, statements.get(1).getClass());
+        });
+
+    }
+
+    @Test
+    public void testConsecutiveNestedFnCallWithArg() {
+
+        assertParsing(multiline("foo(baz(1));",  "bar(daz(2));"), statementCountMustBe(2), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(1, call.getArguments().size());
+            assertEquals(FunctionCallExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(1, ((FunctionCallExpression) call.getArguments().get(0)).getArguments().size());
+
+            assertEquals(FunctionCallExpression.class, statements.get(1).getClass());
+            FunctionCallExpression call2 = (FunctionCallExpression) statements.get(1);
+            assertEquals(1, call2.getArguments().size());
+            assertEquals(FunctionCallExpression.class, call2.getArguments().get(0).getClass());
+            assertEquals(1, ((FunctionCallExpression) call2.getArguments().get(0)).getArguments().size());
+
+
         });
     }
 
@@ -227,7 +335,8 @@ public class BogusParserTest {
     private void assertParsing(String s, int expectedStatementCount, StatementAssertionFunction o) {
         List<BogusStatement> statements = new BogusParser(new BogusLexer(s)).parse();
         System.out.println(statements);
-        assertEquals(expectedStatementCount, statements.size());
+        assertEquals("Expected " + expectedStatementCount + " statements but got " + statements.size(),
+                expectedStatementCount, statements.size());
         o.run(statements);
     }
 }

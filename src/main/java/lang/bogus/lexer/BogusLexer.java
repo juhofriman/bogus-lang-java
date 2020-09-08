@@ -235,11 +235,11 @@ public class BogusLexer {
         return bogusToken;
     }
 
-    // 0 1 2
-    // len 3
-
-
     public boolean hasNext() {
         return this.pointer < this.tokens.size();
+    }
+
+    public BogusToken current() {
+        return this.lookahead(0);
     }
 }

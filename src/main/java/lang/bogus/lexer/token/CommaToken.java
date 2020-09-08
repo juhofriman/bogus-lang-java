@@ -22,7 +22,11 @@ public class CommaToken extends BogusToken {
 
     @Override
     public Expression parsePrefix(BogusLexer lexer) {
-        return lexer.next().parseExpression(lexer);
+        return null;
     }
 
+    @Override
+    public Expression parseInfix(BogusLexer lexer, Expression left) {
+        return null;
+    }
 }

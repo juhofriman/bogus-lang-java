@@ -27,6 +27,6 @@ public class SemicolonToken extends BogusToken {
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
-        return left;
+        return null;
     }
 }

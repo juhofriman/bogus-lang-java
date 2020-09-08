@@ -38,22 +38,32 @@ public abstract class BogusToken {
 
     protected final Expression parseExpression(BogusLexer lexer, int precedence) {
         Expression leftExpression = this.parsePrefix(lexer);
+
         if (!lexer.hasNext()) {
             return leftExpression;
         } else {
-            if(lexer.lookahead(1) != null && lexer.lookahead(1).type() == TokenType.SEMICOLON) {
+            if(lexer.peek() != null && lexer.peek().type() == TokenType.SEMICOLON) {
                 return leftExpression;
             }
         }
 
-        while (lexer.lookahead(0) != null && precedence < lexer.lookahead(0).type().getInfixBindingPower()) {
-            leftExpression = lexer.next().parseInfix(lexer, leftExpression);
+        while (lexer.current() != null && precedence < lexer.current().type().getInfixBindingPower()) {
+            Expression expression = lexer.current().parseInfix(lexer, leftExpression);
+            if(expression != null) {
+                leftExpression = expression;
+                lexer.next();
+            } else {
+                break;
+            }
         }
         return leftExpression;
     }
 
     public Expression parsePrefix(BogusLexer lexer) {
         Deck.message("Dunno how to parse prefix: " + this.type());
+        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+            System.out.println(ste);
+        }
         return null;
     }
 

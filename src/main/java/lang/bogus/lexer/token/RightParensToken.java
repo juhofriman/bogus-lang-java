@@ -31,7 +31,7 @@ public class RightParensToken extends BogusToken {
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
-        return left;
+        return null;
     }
 
 }

@@ -37,13 +37,14 @@ public class LeftParensToken extends BogusToken {
     public Expression parseInfix(BogusLexer lexer, Expression left) {
         if(left instanceof IdentifierExpression) {
             List<Expression> arguments = new LinkedList<>();
-            BogusToken next = lexer.next();
-            while (next != null && lexer.hasNext()) {
-                if(next.type() == TokenType.RIGHT_PARENS) {
-                    break;
+            if(lexer.hasNext() && lexer.peek().type() == TokenType.RIGHT_PARENS) {
+                // nothing to add
+            } else {
+                arguments.add(lexer.next().parseExpression(lexer));
+                while (lexer.current().type() == TokenType.COMMA) {
+                    lexer.next();
+                    arguments.add(lexer.next().parseExpression(lexer));
                 }
-                arguments.add(next.parseExpression(lexer));
-                next = lexer.next();
             }
             return new FunctionCallExpression((IdentifierExpression) left, arguments);
         }

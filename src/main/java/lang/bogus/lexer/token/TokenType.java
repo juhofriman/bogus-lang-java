@@ -8,9 +8,9 @@ public enum TokenType {
     RETURN(null, 1),
     FUN(null, 1),
     LEFT_PARENS(0, 50),
-    RIGHT_PARENS(10, 1),
+    RIGHT_PARENS(10, 4),
     LEFT_BRACE(1, 50),
-    RIGHT_BRACE(1, 1),
+    RIGHT_BRACE(1, 50),
     INT(null, 1),
     STRING(1, 1),
     EQUALS(1, 1),
@@ -18,8 +18,8 @@ public enum TokenType {
     MINUS(100, 10),
     MULTIPLICATION(null, 5),
     DIVISION(null, 9),
-    IDENTIFIER(null, 1),
-    COMMA(null, 0),
+    IDENTIFIER(null, 100),
+    COMMA(5, 150),
     SEMICOLON(null, 0);
 
 
