@@ -41,7 +41,7 @@ public class LeftParensToken extends BogusToken {
                 // nothing to add
             } else {
                 arguments.add(lexer.next().parseExpression(lexer));
-                while (lexer.current().type() == TokenType.COMMA) {
+                while (lexer.hasNext() && lexer.current().type() == TokenType.COMMA) {
                     lexer.next();
                     arguments.add(lexer.next().parseExpression(lexer));
                 }

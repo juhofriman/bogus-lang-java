@@ -12,16 +12,53 @@ import java.util.Map;
  */
 public class BogusScope {
 
-    private Map<String, Value> registry = new HashMap<>();
-    private BogusScope parentScope;
+    /** The "memory" or "registry" */
+    private final Map<String, Value> registry = new HashMap<>();
+    /** Reference to parent scope */
+    private final BogusScope parentScope;
 
     public BogusScope() {
-        this.registry = BogusStd.create();
+        // create root scope with "std"
+        // "std" places stuff like println(), type() and all that in scope
+        // those should be usable everywhere
+        this.registry.putAll(BogusStd.create());
+        this.parentScope = null;
     }
 
     public BogusScope(BogusScope parentScope) {
+        // Create nested scope with reference to the parent
         this.parentScope = parentScope;
     }
+
+    public void store(IdentifierExpression identifier, Value value) {
+        // Store identifier -> value
+        this.registry.put(identifier.getName(), value);
+    }
+
+    public Value resolve(IdentifierExpression identifier) {
+        // Resolve value with given identifier
+        Value value = this.registry.get(identifier.getName());
+        // Yes, I know, null, BAD
+        if(value == null) {
+            // identifier was not found in scope, maybe it is in parent?
+            if(this.parentScope != null) {
+                return this.parentScope.resolve(identifier);
+            }
+            // Nope, we did not manage to resolve "myVariable"
+            // Yes, again, null, I know. BAD
+            return null;
+        } else {
+            return value;
+        }
+    }
+
+    public BogusScope join(BogusScope closure) {
+        // This is just a first try to implement closures
+        // Kinda works...
+        this.registry.putAll(closure.registry);
+        return this;
+    }
+
 
     private void echoIndented(int indentation, String message) {
         // OMG
@@ -40,30 +77,5 @@ public class BogusScope {
             this.parentScope.echoScope(indentation + 1);
         }
         this.echoIndented(indentation, "}");
-    }
-
-    public void store(IdentifierExpression identifier, Value value) {
-        Deck.message("Storing " + identifier);
-        this.registry.put(identifier.getName(), value);
-    }
-
-    public Value resolve(IdentifierExpression identifier) {
-
-        Value value = this.registry.get(identifier.getName());
-        if(value == null) {
-            Deck.message("resolving " + identifier + "from parent");
-            if(this.parentScope != null) {
-                return this.parentScope.resolve(identifier);
-            }
-            return null;
-        } else {
-            Deck.message("resolved " + identifier);
-            return value;
-        }
-    }
-
-    public BogusScope join(BogusScope closure) {
-        this.registry.putAll(closure.registry);
-        return this;
     }
 }

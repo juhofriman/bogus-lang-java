@@ -9,6 +9,7 @@ import lang.bogus.value.Value;
  * Created by juhof on 31.7.2020.
  */
 public class LetStatement implements BogusStatement {
+
     private final IdentifierExpression identifier;
     private final Expression expression;
 
@@ -26,5 +27,14 @@ public class LetStatement implements BogusStatement {
     public Value evaluate(BogusScope scope) {
         scope.store(this.identifier, this.expression.evaluate(scope));
         return scope.resolve(this.identifier);
+    }
+
+    public int bar() {
+        return 1;
+    }
+
+    public void foo() {
+        int a = bar() + bar();
+        int c = -bar();
     }
 }

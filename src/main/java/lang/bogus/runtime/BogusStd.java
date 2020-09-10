@@ -45,7 +45,7 @@ public class BogusStd {
     private static FunctionValue createPrintFn() {
         LinkedList<IdentifierExpression> argBinding = new LinkedList<>();
         argBinding.add(new IdentifierExpression("object"));
-        return new FunctionValue(new IdentifierExpression("type"), argBinding,
+        return new FunctionValue(new IdentifierExpression("println"), argBinding,
                 new Expression() {
                     @Override
                     public Value evaluate(BogusScope scope) {
