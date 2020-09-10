@@ -1,4 +1,2 @@
-fun int main(args []string) {
-    print("Hello world!")
-    return 0
-}
+println("Hello world!")
+

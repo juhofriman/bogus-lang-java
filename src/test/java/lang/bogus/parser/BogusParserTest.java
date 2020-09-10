@@ -61,6 +61,11 @@ public class BogusParserTest {
             assertEquals(new IntegerValue(3), statements.get(0).evaluate(new BogusScope()));
         });
 
+        assertParsing("(((1 + 2) + 3) + 4) ", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(new IntegerValue(10), statements.get(0).evaluate(new BogusScope()));
+        });
+
         assertParsing("(1 + (1 + 1)) + (1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(4), statements.get(0).evaluate(new BogusScope()));

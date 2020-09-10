@@ -1,21 +1,9 @@
 
-fun int sum(a int, b int) = a + b
+fun sum(a, b) = a + b;
 
-fun void output(result int, message string) {
-    print(message + " " + result)
-}
+let a = 4;
+let b = 5;
+let c = sum(a, b);
 
-fun int main(args []string) {
-    let a = 1 + 1
-    let b = 2
-    let c = "bogus-lang calculates: "
-
-    output(sum(a, b), c)
-
-    if a < b {
-        print("a is smaller than b")        
-    } else {
-        print("a is larger or same than b")
-    }
-    return 0
-}
+println("Calculation is");
+println(c);

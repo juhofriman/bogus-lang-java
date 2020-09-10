@@ -50,11 +50,9 @@ public abstract class BogusToken {
         while (lexer.peek() != null && precedence < lexer.peek().type().getInfixBindingPower()) {
             lexer.next();
             Expression expression = lexer.current().parseInfix(lexer, leftExpression);
-            if(expression != null) {
-                leftExpression = expression;
-            } else {
-                break;
-            }
+
+            leftExpression = expression;
+
         }
         return leftExpression;
     }
