@@ -11,7 +11,7 @@ public class StringValue implements Value {
 
     @Override
     public String asString() {
-        return "\"" + this.string.getLiteral().literal + "\"";
+        return this.string.getLiteral().literal;
     }
 
     @Override

@@ -1,9 +1,13 @@
-
-fun sum(a, b) = a + b;
-
 let a = 4;
 let b = 5;
-let c = sum(a, b);
 
-println("Calculation is");
+fun weird_calc(first, second) {
+    let v1 = a * first;
+    let v2 = b * second;
+    return v1 + v2;
+};
+
+let c = weird_calc(13, 94);
+
+println("Wird calculation result is");
 println(c);

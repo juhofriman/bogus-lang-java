@@ -34,20 +34,16 @@ public class Bogus {
 
         BogusLexer bogusLexer = new BogusLexer(SourceReader.readSource(args[0]));
 
-        System.out.println("[");
-        for (BogusToken token : bogusLexer.getTokens()) {
-            System.out.println("\t" + token);
-        }
-        System.out.println("]");
+//        System.out.println("[");
+//        for (BogusToken token : bogusLexer.getTokens()) {
+//            System.out.println("\t" + token);
+//        }
+//        System.out.println("]");
 
         List<BogusStatement> statements = new BogusParser(bogusLexer).parse();
 
-        Value value = null;
         for (BogusStatement statement : statements) {
-            System.out.println("Eval " + statement);
-            value = statement.evaluate(bogusScope);
+            statement.evaluate(bogusScope);
         }
-        System.out.println(value.asString());
-
     }
 }

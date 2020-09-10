@@ -32,7 +32,6 @@ public class FunctionValue implements Value {
         this.name = identifier;
         this.arguments = arguments;
         this.statement = statement;
-
         this.closure = closure;
     }
 
@@ -60,8 +59,7 @@ public class FunctionValue implements Value {
         }
 
         if(this.statement != null) {
-            this.closure.echoScope(1);
-            return this.statement.evaluate(bogusScope.join(this.closure));
+            return this.statement.evaluate(this.closure.join(bogusScope));
         }
 
         return this.expression.evaluate(bogusScope);

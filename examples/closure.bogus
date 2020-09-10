@@ -9,10 +9,16 @@ fun counter(a) {
 
 let incrementOne = counter(1);
 
-println("Demonstrating closure state, by calling incrementOne() consecutively");
+println("Demonstrating closure state, by calling incrementOne() returned from counter consecutively");
+println("");
 
 println(incrementOne());
 println(incrementOne());
 println(incrementOne());
 println(incrementOne());
+
+println("");
+println("OMG THIS IS SO FRIGGING COOL");
+println("");
+println("Wish I had loops ⊛ठ̯⊛ ಠ");
 
