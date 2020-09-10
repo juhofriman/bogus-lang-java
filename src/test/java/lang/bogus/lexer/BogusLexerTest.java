@@ -57,14 +57,19 @@ public class BogusLexerTest {
     public void testConsumeToken() {
         BogusLexer lexer = lexerFromSource("let return fun +");
 
-        assertTrue(lexer.hasNext());
-        assertTokenMatches(TokenType.LET, lexer.next());
+        assertTokenMatches(TokenType.LET, lexer.current());
+
         assertTrue(lexer.hasNext());
         assertTokenMatches(TokenType.RETURN, lexer.next());
+        assertTokenMatches(TokenType.RETURN, lexer.current());
+
         assertTrue(lexer.hasNext());
         assertTokenMatches(TokenType.FUN, lexer.next());
+        assertTokenMatches(TokenType.FUN, lexer.current());
+
         assertTrue(lexer.hasNext());
         assertTokenMatches(TokenType.PLUS, lexer.next());
+        assertTokenMatches(TokenType.PLUS, lexer.current());
 
         assertFalse(lexer.hasNext());
         assertNull(lexer.next());
@@ -84,10 +89,6 @@ public class BogusLexerTest {
         assertTokenMatches(TokenType.FUN,  lexer.lookahead(2));
         assertTrue(lexer.hasNext());
         assertTokenMatches(TokenType.PLUS,  lexer.lookahead(3));
-
-        assertTrue(lexer.hasNext());
-        assertTokenMatches(TokenType.LET, lexer.next());
-        assertTrue(lexer.hasNext());
     }
 
     @Test
@@ -112,17 +113,17 @@ public class BogusLexerTest {
 
     @Test(expected = ExpectingTokenException.class)
     public void testNextWithAssertion() {
-        BogusLexer lexer = lexerFromSource("let");
+        BogusLexer lexer = lexerFromSource("let notfun");
         lexer.next(TokenType.FUN);
     }
 
     private void assertTokensMatch(String source, TokenType ... expected) {
         BogusLexer lexer = lexerFromSource(source);
-        assertTrue("Lexer was empty", lexer.hasNext());
+        assertTrue("Lexer was empty", lexer.current() != null);
 
         for (TokenType tokenType : expected) {
-            BogusToken next = lexer.next();
-            assertTokenMatches(tokenType, next);
+            assertTokenMatches(tokenType, lexer.current());
+            lexer.next();
         }
 
         assertFalse("Lexer was not empty", lexer.hasNext());
