@@ -32,7 +32,7 @@ public class PlusToken extends BogusToken {
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
         lexer.next();
-        Expression right = lexer.next().parseExpression(lexer, type().getInfixBindingPower());
+        Expression right = lexer.current().parseExpression(lexer, type().getInfixBindingPower());
         return new OperationExpression(this, left, right);
     }
 }

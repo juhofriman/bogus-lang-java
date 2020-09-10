@@ -41,6 +41,11 @@ public class BogusParserTest {
             assertEquals(new IntegerValue(3), statements.get(0).evaluate(new BogusScope()));
         });
 
+        assertParsing("1 + 2 + 3", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(new IntegerValue(6), statements.get(0).evaluate(new BogusScope()));
+        });
+
         assertParsing("(1 + 1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(OperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(2), statements.get(0).evaluate(new BogusScope()));
@@ -61,11 +66,10 @@ public class BogusParserTest {
             assertEquals(new IntegerValue(4), statements.get(0).evaluate(new BogusScope()));
         });
 
-        // TODO: this does not pass
-//        assertParsing("(((1 + (1 + 1)) + (1 + (1 + 1 + (1 + 1))))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-//            assertEquals(OperationExpression.class, statements.get(0).getClass());
-//            assertEquals(new IntegerValue(8), statements.get(0).evaluate(new BogusScope()));
-//        });
+        assertParsing("(((1 + (1 + 1)) + (1 + (1 + 1 + (1 + 1))))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(new IntegerValue(8), statements.get(0).evaluate(new BogusScope()));
+        });
     }
 
     @Test
@@ -118,6 +122,17 @@ public class BogusParserTest {
             assertEquals(IntegerExpression.class, call.getArguments().get(3).getClass());
         });
 
+    }
+
+    @Test
+    public void testNoArgNestefFnCall() {
+        assertParsing("foo(bar())", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
+            FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
+            assertEquals(1, call.getArguments().size());
+            assertEquals(FunctionCallExpression.class, call.getArguments().get(0).getClass());
+            assertEquals(0, ((FunctionCallExpression) call.getArguments().get(0)).getArguments().size());
+        });
     }
 
     @Test

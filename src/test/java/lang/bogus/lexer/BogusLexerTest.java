@@ -90,6 +90,26 @@ public class BogusLexerTest {
         assertTrue(lexer.hasNext());
     }
 
+    @Test
+    public void testPeek() {
+        BogusLexer lexer = lexerFromSource("let return fun +");
+
+        assertTrue(lexer.hasNext());
+        assertTokenMatches(TokenType.LET, lexer.current());
+        assertTokenMatches(TokenType.RETURN, lexer.peek());
+        lexer.next();
+        assertTokenMatches(TokenType.RETURN, lexer.current());
+        assertTokenMatches(TokenType.FUN, lexer.peek());
+        lexer.next();
+        assertTokenMatches(TokenType.FUN, lexer.current());
+        assertTokenMatches(TokenType.PLUS, lexer.peek());
+        lexer.next();
+        assertTokenMatches(TokenType.PLUS, lexer.current());
+        assertFalse(lexer.hasNext());
+        assertNull(lexer.peek());
+    }
+
+
     @Test(expected = ExpectingTokenException.class)
     public void testNextWithAssertion() {
         BogusLexer lexer = lexerFromSource("let");

@@ -20,12 +20,12 @@ public class BogusParser {
     }
 
     public List<BogusStatement> parse() {
-        while(lexer.hasNext()) {
-            BogusToken next = lexer.next();
-            BogusStatement parsed = next.parse(lexer);
+        while(lexer.current() != null) {
+            BogusStatement parsed = lexer.current().parse(lexer);
             if(parsed != null) {
                 statements.add(parsed);
             }
+            lexer.next();
         }
         return this.statements;
     }

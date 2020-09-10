@@ -30,20 +30,23 @@ public class LeftParensToken extends BogusToken {
 
     @Override
     public Expression parsePrefix(BogusLexer lexer) {
-        return lexer.next().parseExpression(lexer, type().getPrefixBindingPower());
+        return lexer.next().parseExpression(lexer);
     }
 
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
         if(left instanceof IdentifierExpression) {
             List<Expression> arguments = new LinkedList<>();
-            if(lexer.hasNext() && lexer.peek().type() == TokenType.RIGHT_PARENS) {
+            if(lexer.peek().type() == TokenType.RIGHT_PARENS) {
                 // nothing to add
             } else {
-                arguments.add(lexer.next().parseExpression(lexer));
-                while (lexer.hasNext() && lexer.current().type() == TokenType.COMMA) {
+                lexer.next();
+                arguments.add(lexer.current().parseExpression(lexer));
+                while (lexer.hasNext() && lexer.peek().type() == TokenType.COMMA) {
                     lexer.next();
-                    arguments.add(lexer.next().parseExpression(lexer));
+                    lexer.next();
+                    arguments.add(lexer.current().parseExpression(lexer));
+
                 }
             }
             return new FunctionCallExpression((IdentifierExpression) left, arguments);

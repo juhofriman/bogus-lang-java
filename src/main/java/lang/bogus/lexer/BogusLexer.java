@@ -203,11 +203,11 @@ public class BogusLexer {
     }
 
     public BogusToken next() {
-        if(!this.hasNext()) {
-            return null;
-        }
-        BogusToken bogusToken = this.tokens.get(this.pointer);
+//        if(!this.hasNext()) {
+//            return null;
+//        }
         this.pointer++;
+        BogusToken bogusToken = this.lookahead(0);
         return bogusToken;
     }
 
@@ -224,9 +224,7 @@ public class BogusLexer {
     }
 
     public BogusToken lookahead(int i) {
-        if(!this.hasNext()) {
-            return null;
-        }
+
         int index = this.pointer + i;
         if(index >= this.tokens.size()) {
             return null;
@@ -236,7 +234,7 @@ public class BogusLexer {
     }
 
     public boolean hasNext() {
-        return this.pointer < this.tokens.size();
+        return this.pointer + 1 < this.tokens.size();
     }
 
     public BogusToken current() {
