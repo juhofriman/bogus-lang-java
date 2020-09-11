@@ -1,0 +1,6 @@
+fun do() {
+    return 1;
+    println("Hidden messages");
+}
+
+println(do());
