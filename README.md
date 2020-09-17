@@ -1,9 +1,12 @@
 # Bogus Lang
 
-Bogus is a bogus language on top of JVM. It is something that is known as AST Walking Evaluator, and it is done simply  
+Bogus is a bogus language on top of JVM. It is something that is known as AST Walking Evaluator, and it is done simply 
 just for educational purposes and fun.
 
-It's worse than javascript. But it works. At some point at least.
+* Runs on JVM
+* Single threaded without event driven I/O
+* Dynamic typing
+* REPL and file evaluation
 
 ## Syntax Example
 
