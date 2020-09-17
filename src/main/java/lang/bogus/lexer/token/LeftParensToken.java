@@ -39,6 +39,7 @@ public class LeftParensToken extends BogusToken {
             List<Expression> arguments = new LinkedList<>();
             if(lexer.peek().type() == TokenType.RIGHT_PARENS) {
                 // nothing to add
+                lexer.next();
             } else {
                 lexer.next();
                 arguments.add(lexer.current().parseExpression(lexer));
@@ -46,7 +47,9 @@ public class LeftParensToken extends BogusToken {
                     lexer.next();
                     lexer.next();
                     arguments.add(lexer.current().parseExpression(lexer));
-
+                    if(lexer.current().type() == TokenType.RIGHT_PARENS) {
+                        break;
+                    }
                 }
             }
             return new FunctionCallExpression((IdentifierExpression) left, arguments);

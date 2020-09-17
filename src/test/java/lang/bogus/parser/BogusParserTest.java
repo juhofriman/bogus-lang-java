@@ -172,7 +172,7 @@ public class BogusParserTest {
             assertEquals(2, ((FunctionCallExpression) call.getArguments().get(0)).getArguments().size());
         });
 
-        assertParsing("foo(1, bar(1, 2))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+        assertParsing("foo(1, bar(2, 3))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
             FunctionCallExpression call = (FunctionCallExpression) statements.get(0);
             assertEquals(2, call.getArguments().size());
@@ -183,7 +183,7 @@ public class BogusParserTest {
 
     @Test
     public void testComplexNestedFnCall() {
-        assertParsing("foo(baz(1, 2), bar(1, 2))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+        assertParsing("foo(baz(1, 2), bar(3, 4))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
             FunctionCallExpression rootCall = (FunctionCallExpression) statements.get(0);
             assertEquals(2, rootCall.getArguments().size());
@@ -193,6 +193,12 @@ public class BogusParserTest {
 
         });
     }
+
+    /*
+    [fnCall {foo}(
+        [fnCall {baz}(
+            [INT=1, INT=2, fnCall {bar}([INT=3, INT=4])])])]
+     */
 
     @Test
     public void testFnCallWithDifferentTypes() {
@@ -355,7 +361,6 @@ public class BogusParserTest {
 
     private void assertParsing(String s, int expectedStatementCount, StatementAssertionFunction o) {
         List<BogusStatement> statements = new BogusParser(new BogusLexer(s)).parse();
-        System.out.println(statements);
         assertEquals("Expected " + expectedStatementCount + " statements but got " + statements.size(),
                 expectedStatementCount, statements.size());
         o.run(statements);
