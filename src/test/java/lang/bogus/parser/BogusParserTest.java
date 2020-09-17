@@ -78,6 +78,14 @@ public class BogusParserTest {
     }
 
     @Test
+    public void testEqualsExpression() {
+        assertParsing("1 == 1", statementCountMustBe(1), (List<BogusStatement> statements) -> {
+            assertEquals(EqualsOperationExpression.class, statements.get(0).getClass());
+            // Needz something more
+        });
+    }
+
+    @Test
     public void testSimpleFnCall() {
         assertParsing("foo()", statementCountMustBe(1), (List<BogusStatement> statements) -> {
             assertEquals(FunctionCallExpression.class, statements.get(0).getClass());
@@ -194,12 +202,6 @@ public class BogusParserTest {
         });
     }
 
-    /*
-    [fnCall {foo}(
-        [fnCall {baz}(
-            [INT=1, INT=2, fnCall {bar}([INT=3, INT=4])])])]
-     */
-
     @Test
     public void testFnCallWithDifferentTypes() {
 
@@ -254,8 +256,6 @@ public class BogusParserTest {
             assertEquals(1, call2.getArguments().size());
             assertEquals(FunctionCallExpression.class, call2.getArguments().get(0).getClass());
             assertEquals(1, ((FunctionCallExpression) call2.getArguments().get(0)).getArguments().size());
-
-
         });
     }
 

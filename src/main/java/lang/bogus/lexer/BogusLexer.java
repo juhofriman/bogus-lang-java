@@ -144,6 +144,10 @@ class RawTokenizer {
                 return new FunToken(literal);
             case "return":
                 return new ReturnToken(literal);
+            case "true":
+                return new BooleanToken(literal);
+            case "false":
+                return new BooleanToken(literal);
             case "(":
                 return new LeftParensToken(literal);
             case ")":

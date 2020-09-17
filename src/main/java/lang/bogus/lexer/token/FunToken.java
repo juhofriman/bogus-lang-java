@@ -22,10 +22,6 @@ public class FunToken extends BogusToken {
         return TokenType.FUN;
     }
 
-    /*
-    fun sum(a, b) =
-     */
-
     @Override
     public BogusStatement parse(BogusLexer lexer) {
         BogusToken identifier = lexer.next(TokenType.IDENTIFIER);

@@ -2,6 +2,8 @@ package lang.bogus.value;
 
 import lang.bogus.lexer.token.StringToken;
 
+import java.util.Objects;
+
 public class StringValue extends Value {
     private String string;
 
@@ -38,5 +40,18 @@ public class StringValue extends Value {
     @Override
     public String typeString() {
         return "String";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StringValue)) return false;
+        StringValue that = (StringValue) o;
+        return string.equals(that.string);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(string);
     }
 }

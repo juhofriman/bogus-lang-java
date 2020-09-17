@@ -20,7 +20,9 @@ public enum TokenType {
     DIVISION(null, 9),
     IDENTIFIER(null, 5),
     COMMA(5, -1),
-    SEMICOLON(null, 0);
+    SEMICOLON(null, 0),
+    BOOLEAN(null, 0);
+
 
 
     private final Integer prefixBindingPower;
