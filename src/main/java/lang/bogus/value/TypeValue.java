@@ -1,6 +1,6 @@
 package lang.bogus.value;
 
-public class TypeValue implements Value {
+public class TypeValue extends Value {
     private Value value;
 
     public TypeValue(Value Value) {

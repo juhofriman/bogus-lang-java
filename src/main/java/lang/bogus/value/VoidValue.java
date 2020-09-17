@@ -1,6 +1,6 @@
 package lang.bogus.value;
 
-public class VoidValue implements Value {
+public class VoidValue extends Value {
     public static final VoidValue VOID = new VoidValue();
 
     private VoidValue() {

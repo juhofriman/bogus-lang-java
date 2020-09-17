@@ -1,5 +1,6 @@
 package lang.bogus.lexer.token;
 
+import lang.bogus.expression.PlusOperationExpression;
 import lang.bogus.lexer.BogusLexer;
 import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
@@ -33,6 +34,6 @@ public class PlusToken extends BogusToken {
     public Expression parseInfix(BogusLexer lexer, Expression left) {
         lexer.next();
         Expression right = lexer.current().parseExpression(lexer, type().getInfixBindingPower());
-        return new OperationExpression(this, left, right);
+        return new PlusOperationExpression(left, right);
     }
 }

@@ -11,6 +11,7 @@ import lang.bogus.value.Value;
 /**
  * Created by juhof on 31.7.2020.
  */
+@Deprecated
 public class OperationExpression implements Expression {
     // TODO this shouldn't be token...
     private final BogusToken token;
@@ -18,6 +19,9 @@ public class OperationExpression implements Expression {
     private final Expression right;
 
     public OperationExpression(BogusToken token, Expression left, Expression right) {
+        if(true) {
+            throw new RuntimeException("Don't use this. Fix parser.");
+        }
         if(left == null) {
             throw new IllegalArgumentException("Left expression is null");
         }

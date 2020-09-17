@@ -37,42 +37,42 @@ public class BogusParserTest {
     @Test
     public void testArithmeticExpressions() {
         assertParsing("1 + 2", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(3), statements.get(0).evaluate(new BogusScope()));
         });
 
         assertParsing("1 + 2 + 3", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(6), statements.get(0).evaluate(new BogusScope()));
         });
 
         assertParsing("(1 + 1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(2), statements.get(0).evaluate(new BogusScope()));
         });
 
         assertParsing("(1) + (1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(2), statements.get(0).evaluate(new BogusScope()));
         });
 
         assertParsing("(1 + 1) + (1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(3), statements.get(0).evaluate(new BogusScope()));
         });
 
         assertParsing("(((1 + 2) + 3) + 4) ", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(10), statements.get(0).evaluate(new BogusScope()));
         });
 
         assertParsing("(1 + (1 + 1)) + (1)", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(4), statements.get(0).evaluate(new BogusScope()));
         });
 
         assertParsing("(((1 + (1 + 1)) + (1 + (1 + 1 + (1 + 1))))", statementCountMustBe(1), (List<BogusStatement> statements) -> {
-            assertEquals(OperationExpression.class, statements.get(0).getClass());
+            assertEquals(PlusOperationExpression.class, statements.get(0).getClass());
             assertEquals(new IntegerValue(8), statements.get(0).evaluate(new BogusScope()));
         });
     }

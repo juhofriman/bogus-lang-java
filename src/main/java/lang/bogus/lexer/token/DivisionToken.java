@@ -1,5 +1,6 @@
 package lang.bogus.lexer.token;
 
+import lang.bogus.expression.DivisionOperationExpression;
 import lang.bogus.lexer.BogusLexer;
 import lang.bogus.lexer.RawLiteral;
 import lang.bogus.statement.BogusStatement;
@@ -32,6 +33,6 @@ public class DivisionToken extends BogusToken {
     @Override
     public Expression parseInfix(BogusLexer lexer, Expression left) {
         Expression right = lexer.next().parseExpression(lexer, type().getInfixBindingPower());
-        return new OperationExpression(this, left, right);
+        return new DivisionOperationExpression(left, right);
     }
 }

@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Created by juhof on 31.7.2020.
  */
-public class IntegerValue implements Value {
+public class IntegerValue extends Value {
 
     private int value;
 
@@ -25,6 +25,44 @@ public class IntegerValue implements Value {
 
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public Value applyPlus(Value other) {
+        if(other instanceof IntegerValue) {
+            return new IntegerValue(this.value + ((IntegerValue) other).value);
+        }
+        if(other instanceof StringValue) {
+            return new StringValue(this.asString() + other.asString());
+        }
+        return super.applyPlus(other);
+    }
+
+    @Override
+    public Value applyMinus(Value other) {
+        if(other instanceof IntegerValue) {
+            return new IntegerValue(this.value - ((IntegerValue) other).value);
+        }
+        return super.applyPlus(other);
+    }
+
+    @Override
+    public Value applyDivision(Value other) {
+        if(other instanceof IntegerValue) {
+            return new IntegerValue(this.value / ((IntegerValue) other).value);
+        }
+        return super.applyPlus(other);
+    }
+
+    @Override
+    public Value applyMultiplication(Value other) {
+        if(other instanceof IntegerValue) {
+            return new IntegerValue(this.value * ((IntegerValue) other).value);
+        }
+        if(other instanceof StringValue) {
+            return new StringValue(other.asString().repeat(this.value));
+        }
+        return super.applyPlus(other);
     }
 
     @Override

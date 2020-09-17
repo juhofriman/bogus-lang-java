@@ -9,7 +9,7 @@ import lang.bogus.expression.IdentifierExpression;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FunctionValue implements Value {
+public class FunctionValue extends Value {
     private IdentifierExpression name;
     private final List<IdentifierExpression> arguments;
     private Expression expression;
