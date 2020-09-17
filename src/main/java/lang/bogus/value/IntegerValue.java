@@ -43,7 +43,7 @@ public class IntegerValue extends Value {
         if(other instanceof IntegerValue) {
             return new IntegerValue(this.value - ((IntegerValue) other).value);
         }
-        return super.applyPlus(other);
+        return super.applyMinus(other);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class IntegerValue extends Value {
         if(other instanceof IntegerValue) {
             return new IntegerValue(this.value / ((IntegerValue) other).value);
         }
-        return super.applyPlus(other);
+        return super.applyDivision(other);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class IntegerValue extends Value {
         if(other instanceof StringValue) {
             return new StringValue(other.asString().repeat(this.value));
         }
-        return super.applyPlus(other);
+        return super.applyMultiplication(other);
     }
 
     @Override
