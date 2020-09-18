@@ -32,6 +32,6 @@ public class EqualsToken extends BogusToken {
             Expression right = lexer.current().parseExpression(lexer);
             return new EqualsOperationExpression(left, right);
         }
-        throw new RuntimeException("What are we doing here?");
+        throw new RuntimeException("Encountered = in infix but it can't be used here");
     }
 }

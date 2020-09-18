@@ -17,39 +17,41 @@ public class BogusScope {
     /** Reference to parent scope */
     private final BogusScope parentScope;
 
+    /**
+     * Create root scope. Passes STD stuff in.
+     */
     public BogusScope() {
-        // create root scope with "std"
-        // "std" places stuff like println(), type() and all that in scope
-        // those should be usable everywhere
         this.registry.putAll(BogusStd.create());
         this.parentScope = null;
     }
 
+    /**
+     * Create child scope
+     *
+     * @param parentScope
+     */
     public BogusScope(BogusScope parentScope) {
-        // Create nested scope with reference to the parent
         this.parentScope = parentScope;
     }
 
     public void store(IdentifierExpression identifier, Value value) {
-        // Store identifier -> value
         this.registry.put(identifier.getName(), value);
     }
 
     public Value resolve(IdentifierExpression identifier) {
-        // Resolve value with given identifier
         Value value = this.registry.get(identifier.getName());
-        // Yes, I know, null, BAD
         if(value == null) {
-            // identifier was not found in scope, maybe it is in parent?
             if(this.parentScope != null) {
                 return this.parentScope.resolve(identifier);
             }
-            // Nope, we did not manage to resolve "myVariable"
-            // Yes, again, null, I know. BAD
             return null;
         } else {
             return value;
         }
+    }
+
+    public boolean has(IdentifierExpression identifier) {
+        return this.resolve(identifier) != null;
     }
 
     public BogusScope join(BogusScope closure) {

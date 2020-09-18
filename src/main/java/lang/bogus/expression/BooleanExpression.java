@@ -5,6 +5,7 @@ import lang.bogus.value.BooleanValue;
 import lang.bogus.value.Value;
 
 public class BooleanExpression implements Expression {
+
     private boolean value;
 
     public BooleanExpression(boolean value) {

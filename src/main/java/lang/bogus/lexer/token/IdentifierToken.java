@@ -2,6 +2,7 @@ package lang.bogus.lexer.token;
 
 import lang.bogus.lexer.BogusLexer;
 import lang.bogus.lexer.RawLiteral;
+import lang.bogus.statement.AssignStatement;
 import lang.bogus.statement.BogusStatement;
 import lang.bogus.expression.Expression;
 import lang.bogus.expression.IdentifierExpression;
@@ -21,6 +22,12 @@ public class IdentifierToken extends BogusToken {
 
     @Override
     public BogusStatement parse(BogusLexer lexer) {
+        if(lexer.hasNext() && lexer.peek().type() == TokenType.EQUALS) {
+            lexer.next();
+            lexer.next();
+            Expression expression = lexer.current().parseExpression(lexer);
+            return new AssignStatement(new IdentifierExpression(this), expression);
+        }
         return super.parseExpression(lexer);
     }
 
